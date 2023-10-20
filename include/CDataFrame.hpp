@@ -71,14 +71,6 @@ public:
      */
     std::vector<std::string> keys() const;
     /**
-     * @brief Get a reference to the keys.
-     * 
-     * @return std::vector<std::string>&
-     * 
-     * @ingroup getter
-     */
-    std::vector<std::string> &keys();
-    /**
      * @brief Get the data.
      * 
      * @return cmatrix::CMatrix<T>

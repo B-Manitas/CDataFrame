@@ -16,12 +16,6 @@ std::vector<std::string> cdata_frame<T>::keys() const
 }
 
 template <class T>
-std::vector<std::string> &cdata_frame<T>::keys()
-{
-    return m_keys;
-}
-
-template <class T>
 cmatrix<T> cdata_frame<T>::data() const
 {
     return m_data;
