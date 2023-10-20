@@ -1,13 +1,16 @@
 /**
  * @file CDataFrameTest.tpp
  * @brief File containing unit tests for the 'DataFrame' class.
- * 
+ *
  * @see CDataFrame.hpp
  * @defgroup test
  */
 
 #include <gtest/gtest.h>
 #include "CDataFrame.hpp"
+
+// ==================================================
+// Constructor
 
 TEST(CDataFrameTest, Constructor)
 {
@@ -35,6 +38,81 @@ TEST(CDataFrameTest, Constructor)
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(cdata_frame<int>({"a", "b", "c"}, cmatrix<int>(3, 2)), std::invalid_argument);
+}
+
+// ==================================================
+// Getter
+
+TEST(CDataFrameTest, keys)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_TRUE(df.keys().empty());
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    EXPECT_EQ(df2.keys(), (std::vector<std::string>{"a", "b", "c"}));
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    EXPECT_TRUE(df3.keys().empty());
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_EQ(df4.keys(), (std::vector<std::string>{"a", "b", "c"}));    
+}
+
+TEST(CDataFrame, data)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_TRUE(df.data().is_empty());
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    EXPECT_TRUE(df2.data().is_empty());
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    EXPECT_EQ(df3.data(), data);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_EQ(df4.data(), data);
+}
+
+
+// ==================================================
+// Setter
+
+TEST(CDataFrameTest, set_keys)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    df.set_keys({"a", "b", "c"});
+    EXPECT_EQ(df.keys(), (std::vector<std::string>{"a", "b", "c"}));
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    df2.set_keys({"d", "e", "f"});
+    EXPECT_EQ(df2.keys(), (std::vector<std::string>{"d", "e", "f"}));
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    df3.set_keys({"a", "b", "c"});
+    EXPECT_EQ(df3.keys(), (std::vector<std::string>{"a", "b", "c"}));
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.set_keys({"d", "e", "f"});
+    EXPECT_EQ(df4.keys(), (std::vector<std::string>{"d", "e", "f"}));
+
+    // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df4.set_keys({}), std::invalid_argument);
+    EXPECT_THROW(df4.set_keys({"a", "b", "c", "d"}), std::invalid_argument);
 }
 
 TEST(CDataFrame, set_data)
