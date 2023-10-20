@@ -10,16 +10,16 @@
 // Constructors
 
 template <class T>
-CDataFrame<T>::CDataFrame() {}
+cdata_frame<T>::cdata_frame() {}
 
 template <class T>
-CDataFrame<T>::CDataFrame(const cmatrix<T> &data) : m_data(data) {}
+cdata_frame<T>::cdata_frame(const cmatrix<T> &data) : m_data(data) {}
 
 template <class T>
-CDataFrame<T>::CDataFrame(const std::vector<std::string> &keys) : m_keys(keys) {}
+cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys) : m_keys(keys) {}
 
 template <class T>
-CDataFrame<T>::CDataFrame(const std::vector<std::string> &keys, const cmatrix<T> &data)
+cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data)
 {
     if (keys.size() != data.dim_h())
         throw std::invalid_argument("The number of keys must be equal to the number of columns of the data.");
@@ -31,4 +31,4 @@ CDataFrame<T>::CDataFrame(const std::vector<std::string> &keys, const cmatrix<T>
 // ==================================================
 // Destructor
 template <class T>
-CDataFrame<T>::~CDataFrame() {}
+cdata_frame<T>::~cdata_frame() {}

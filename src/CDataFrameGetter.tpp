@@ -10,19 +10,19 @@
 // Getter
 
 template <class T>
-std::vector<std::string> CDataFrame<T>::keys() const
+std::vector<std::string> cdata_frame<T>::keys() const
 {
     return m_keys;
 }
 
 template <class T>
-std::vector<std::string> &CDataFrame<T>::keys()
+std::vector<std::string> &cdata_frame<T>::keys()
 {
     return m_keys;
 }
 
 template <class T>
-cmatrix<T> CDataFrame<T>::data() const
+cmatrix<T> cdata_frame<T>::data() const
 {
     return m_data;
 }

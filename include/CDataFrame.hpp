@@ -22,7 +22,7 @@
  * @tparam T The type of the data.
  */
 template <typename T>
-class CDataFrame
+class cdata_frame
 {
 private:
     std::vector<std::string> m_keys = std::vector<std::string>();
@@ -33,19 +33,19 @@ public:
     /**
      * @brief Construct a new CDataFrame object.
      */
-    CDataFrame();
+    cdata_frame();
     /**
      * @brief Construct a new CDataFrame object.
      * 
      * @param data The cmatrix object containing the data.
      */
-    CDataFrame(const cmatrix<T> &data);
+    cdata_frame(const cmatrix<T> &data);
     /**
      * @brief Construct a new CDataFrame object.
      * 
      * @param keys The keys of the data.
      */
-    CDataFrame(const std::vector<std::string> &keys);
+    cdata_frame(const std::vector<std::string> &keys);
     /**
      * @brief Construct a new CDataFrame object.
      * 
@@ -55,11 +55,11 @@ public:
      * 
      * @note The number of keys must be equal to the number of columns of the data.
      */
-    CDataFrame(const std::vector<std::string> &keys, const cmatrix<T> &data);
+    cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data);
     /**
      * @brief Destroy the CDataFrame object.
      */
-    ~CDataFrame();
+    ~cdata_frame();
 
     // Getters
     /**
