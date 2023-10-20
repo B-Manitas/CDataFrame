@@ -25,8 +25,8 @@ template <typename T>
 class CDataFrame
 {
 private:
-    std::vector<std::string> m_keys;
-    cmatrix<T> m_data;
+    std::vector<std::string> m_keys = std::vector<std::string>();
+    cmatrix<T> m_data = cmatrix<T>();
 
 public:
     // Constructors

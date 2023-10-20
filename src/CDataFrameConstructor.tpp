@@ -10,6 +10,7 @@
 // Constructors
 
 template <class T>
+CDataFrame<T>::CDataFrame() {}
 
 template <class T>
 CDataFrame<T>::CDataFrame(const cmatrix<T> &data) : m_data(data) {}
