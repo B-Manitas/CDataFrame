@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 #include <tuple>
+#include <initializer_list>
 
 #include "../lib/CMatrix/include/CMatrix.hpp"
 
@@ -33,6 +34,28 @@ public:
      * @brief Construct a new CDataFrame object.
      */
     CDataFrame();
+    /**
+     * @brief Construct a new CDataFrame object.
+     * 
+     * @param data The cmatrix object containing the data.
+     */
+    CDataFrame(const cmatrix<T> &data);
+    /**
+     * @brief Construct a new CDataFrame object.
+     * 
+     * @param keys The keys of the data.
+     */
+    CDataFrame(const std::vector<std::string> &keys);
+    /**
+     * @brief Construct a new CDataFrame object.
+     * 
+     * @param keys The keys of the data.
+     * @param data The cmatrix object containing the data.
+     * @throw std::invalid_argument If the number of keys is different from the number of columns of the data.
+     * 
+     * @note The number of keys must be equal to the number of columns of the data.
+     */
+    CDataFrame(const std::vector<std::string> &keys, const cmatrix<T> &data);
     /**
      * @brief Destroy the CDataFrame object.
      */
