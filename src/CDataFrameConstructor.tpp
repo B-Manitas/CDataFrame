@@ -16,10 +16,7 @@ CDataFrame<T>::CDataFrame()
     m_data = cmatrix<T>();
 }
 
+// ==================================================
 // Destructor
 template <class T>
-CDataFrame<T>::~CDataFrame()
-{
-    m_keys.clear();
-    m_data.~cmatrix();
-}
+CDataFrame<T>::~CDataFrame() {}
