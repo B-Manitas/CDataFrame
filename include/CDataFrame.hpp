@@ -88,6 +88,14 @@ public:
      * @ingroup setter
      */
     void set_keys(const std::vector<std::string> &keys);
+    /**
+     * @brief Set the data.
+     * 
+     * @param data 
+     * 
+     * @ingroup setter
+     */
+    void set_data(const cmatrix<T> &data);
 };
 
 #include "../src/CDataFrame.tpp"

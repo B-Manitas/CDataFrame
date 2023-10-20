@@ -37,6 +37,34 @@ TEST(CDataFrameTest, Constructor)
     EXPECT_THROW(cdata_frame<int>({"a", "b", "c"}, cmatrix<int>(3, 2)), std::invalid_argument);
 }
 
+TEST(CDataFrame, set_data)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    df.set_data(data);
+    EXPECT_EQ(df.data(), data);
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    df2.set_data(data);
+    EXPECT_EQ(df2.data(), data);
+
+    // DF WITH DATA
+    cmatrix<int> data2({{7, 8, 9}, {10, 11, 12}});
+    cdata_frame<int> df3(data);
+    df3.set_data(data2);
+    EXPECT_EQ(df3.data(), data2);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.set_data(data2);
+    EXPECT_EQ(df4.data(), data2);
+
+    // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df4.set_data(cmatrix<int>(3, 2)), std::invalid_argument);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
