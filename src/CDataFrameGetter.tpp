@@ -7,7 +7,7 @@
  */
 
 // ==================================================
-// Getter
+// GETTER
 
 template <class T>
 std::vector<std::string> cdata_frame<T>::keys() const

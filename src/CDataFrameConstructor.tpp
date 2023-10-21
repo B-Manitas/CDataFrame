@@ -7,7 +7,7 @@
  */
 
 // ==================================================
-// Constructors
+// CONSTRUCTOR
 
 template <class T>
 cdata_frame<T>::cdata_frame() {}

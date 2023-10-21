@@ -7,7 +7,7 @@
  */
 
 // ==================================================
-// Setter
+// SETTER
 
 template <class T>
 void cdata_frame<T>::set_keys(const std::vector<std::string> &keys)

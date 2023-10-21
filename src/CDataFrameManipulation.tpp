@@ -7,7 +7,7 @@
  */
 
 // ==================================================
-// Insert
+// INSERT
 
 template <class T>
 void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val)

@@ -29,7 +29,7 @@ private:
     std::vector<std::string> m_keys = std::vector<std::string>();
 
 public:
-    // Constructors
+    // CONSTRUCTOR
     /**
      * @brief Construct a new CDataFrame object.
      */
@@ -61,7 +61,7 @@ public:
      */
     ~cdata_frame();
 
-    // Getters
+    // GETTER
     /**
      * @brief Get the keys.
      *
@@ -79,7 +79,7 @@ public:
      */
     cmatrix<T> data() const;
 
-    // Setters
+    // SETTER
     /**
      * @brief Set the keys.
      *
@@ -97,7 +97,7 @@ public:
      */
     void set_data(const cmatrix<T> &data);
 
-    // Manipulation
+    // MANIPULATION
     /**
      * @brief Insert a row at the given position.
      *

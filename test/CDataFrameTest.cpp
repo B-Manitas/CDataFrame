@@ -10,7 +10,7 @@
 #include "CDataFrame.hpp"
 
 // ==================================================
-// Constructor
+// CONSTRUCTOR
 
 TEST(TestConstructor, Constructor)
 {
@@ -45,7 +45,7 @@ TEST(TestConstructor, Constructor)
 }
 
 // ==================================================
-// Getter
+// GETTER
 
 TEST(TestGetter, keys)
 {
@@ -88,7 +88,7 @@ TEST(TestGetter, data)
 }
 
 // ==================================================
-// Setter
+// SETTER
 
 TEST(TestSetter, set_keys)
 {
@@ -150,7 +150,7 @@ TEST(TestSetter, set_data)
 }
 
 // ==================================================
-// Manipulation
+// MANIPULATION
 
 TEST(TestManipulation, insert_row)
 {
