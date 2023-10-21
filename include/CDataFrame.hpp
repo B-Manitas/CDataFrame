@@ -13,6 +13,7 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <initializer_list>
 #include <vector>
 
 #include "../lib/CMatrix/include/CMatrix.hpp"
@@ -37,6 +38,7 @@ private:
      * @ingroup general
      */
     std::vector<std::string> __generate_uid_keys(const std::string &prefix = "key_") const;
+
 public:
     // CONSTRUCTOR
     /**
@@ -129,6 +131,44 @@ public:
      * @ingroup manipulation
      */
     void insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key = "");
+    /**
+     * @brief Push a row at the front of the data.
+     *
+     * @param val The row to push.
+     * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
+     *
+     * @ingroup manipulation
+     */
+    void push_row_front(const std::vector<T> &val);
+    /**
+     * @brief Push a row at the back of the data.
+     *
+     * @param val The row to push.
+     * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
+     *
+     * @ingroup manipulation
+     */
+    void push_row_back(const std::vector<T> &val);
+    /**
+     * @brief Push a column at the front of the data.
+     *
+     * @param val The column to push.
+     * @param key The key of the column.
+     * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
+     *
+     * @ingroup manipulation
+     */
+    void push_column_front(const std::vector<T> &val, const std::string &key = "");
+    /**
+     * @brief Push a column at the back of the data.
+     *
+     * @param val The column to push.
+     * @param key The key of the column.
+     * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
+     *
+     * @ingroup manipulation
+     */
+    void push_column_back(const std::vector<T> &val, const std::string &key = "");
 };
 
 #include "../src/CDataFrameConstructor.tpp"
