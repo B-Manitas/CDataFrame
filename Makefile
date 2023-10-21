@@ -40,5 +40,3 @@ clean_exe :
 	clear
 
 clean : clean_obj clean_exe
-
-.PHONY : all test main clean_obj clean_exe clean
