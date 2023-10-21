@@ -15,6 +15,9 @@ void cdata_frame<T>::set_keys(const std::vector<std::string> &keys)
     if (not cmatrix<T>::is_empty() && keys.size() != cmatrix<T>::dim_h())
         throw std::invalid_argument("The number of keys must be equal to the number of columns.");
 
+    if (std::set<std::string>(keys.begin(), keys.end()).size() != keys.size())
+        throw std::invalid_argument("The keys must be unique.");
+
     m_keys = keys;
 }
 

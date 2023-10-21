@@ -38,6 +38,10 @@ TEST(CDataFrameTest, Constructor)
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(cdata_frame<int>({"a", "b", "c"}, cmatrix<int>(3, 2)), std::invalid_argument);
+
+    // DF WITH KEYS NOT UNIQUE
+    EXPECT_THROW(cdata_frame<int>({"a", "b", "b"}, cmatrix<int>(3, 3)), std::invalid_argument);
+    EXPECT_THROW(cdata_frame<int>({"a", "b", "b"}), std::invalid_argument);
 }
 
 // ==================================================
@@ -60,7 +64,7 @@ TEST(CDataFrameTest, keys)
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
-    EXPECT_EQ(df4.keys(), (std::vector<std::string>{"a", "b", "c"}));    
+    EXPECT_EQ(df4.keys(), (std::vector<std::string>{"a", "b", "c"}));
 }
 
 TEST(CDataFrame, data)
@@ -82,7 +86,6 @@ TEST(CDataFrame, data)
     cdata_frame<int> df4({"a", "b", "c"}, data);
     EXPECT_EQ(df4.data(), data);
 }
-
 
 // ==================================================
 // Setter
@@ -113,6 +116,9 @@ TEST(CDataFrameTest, set_keys)
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.set_keys({}), std::invalid_argument);
     EXPECT_THROW(df4.set_keys({"a", "b", "c", "d"}), std::invalid_argument);
+
+    // DF WITH KEYS NOT UNIQUE
+    EXPECT_THROW(df4.set_keys({"a", "b", "b"}), std::invalid_argument);
 }
 
 TEST(CDataFrame, set_data)

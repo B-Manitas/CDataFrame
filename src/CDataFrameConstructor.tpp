@@ -13,18 +13,22 @@ template <class T>
 cdata_frame<T>::cdata_frame() {}
 
 template <class T>
-cdata_frame<T>::cdata_frame(const cmatrix<T> &data) : cmatrix<T>(data) {}
-
-template <class T>
-cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys) : m_keys(keys) {}
-
-template <class T>
-cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data) : cmatrix<T>(data)
+cdata_frame<T>::cdata_frame(const cmatrix<T> &data)
 {
-    if (keys.size() != data.dim_h())
-        throw std::invalid_argument("The number of keys must be equal to the number of columns of the data.");
+    set_data(data);
+}
 
-    m_keys = keys;
+template <class T>
+cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys)
+{
+    set_keys(keys);
+}
+
+template <class T>
+cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data)
+{
+    set_keys(keys);
+    set_data(data);
 }
 
 // ==================================================

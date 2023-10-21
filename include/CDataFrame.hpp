@@ -9,10 +9,11 @@
 
 #pragma once
 
-#include <string>
-#include <vector>
-#include <tuple>
 #include <initializer_list>
+#include <set>
+#include <string>
+#include <tuple>
+#include <vector>
 
 #include "../lib/CMatrix/include/CMatrix.hpp"
 
