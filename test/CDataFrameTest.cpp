@@ -12,7 +12,7 @@
 // ==================================================
 // Constructor
 
-TEST(CDataFrameTest, Constructor)
+TEST(TestConstructor, Constructor)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -47,7 +47,7 @@ TEST(CDataFrameTest, Constructor)
 // ==================================================
 // Getter
 
-TEST(CDataFrameTest, keys)
+TEST(TestGetter, keys)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -67,7 +67,7 @@ TEST(CDataFrameTest, keys)
     EXPECT_EQ(df4.keys(), (std::vector<std::string>{"a", "b", "c"}));
 }
 
-TEST(CDataFrame, data)
+TEST(TestGetter, data)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -90,7 +90,7 @@ TEST(CDataFrame, data)
 // ==================================================
 // Setter
 
-TEST(CDataFrameTest, set_keys)
+TEST(TestSetter, set_keys)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -121,7 +121,7 @@ TEST(CDataFrameTest, set_keys)
     EXPECT_THROW(df4.set_keys({"a", "b", "b"}), std::invalid_argument);
 }
 
-TEST(CDataFrameTest, set_data)
+TEST(TestSetter, set_data)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -152,7 +152,7 @@ TEST(CDataFrameTest, set_data)
 // ==================================================
 // Manipulation
 
-TEST(CDataFrameTest, insert_row)
+TEST(TestManipulation, insert_row)
 {
     // DF EMPTY
     cdata_frame<int> df;
@@ -180,7 +180,7 @@ TEST(CDataFrameTest, insert_row)
     EXPECT_THROW(df4.insert_row(0, {7, 8, 9, 10}), std::invalid_argument);
 }
 
-TEST(CDataFrameTest, insert_column)
+TEST(TestManipulation, insert_column)
 {
     // DF EMPTY
     cdata_frame<int> df;
