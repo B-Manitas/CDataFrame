@@ -18,5 +18,5 @@ std::vector<std::string> cdata_frame<T>::keys() const
 template <class T>
 cmatrix<T> cdata_frame<T>::data() const
 {
-    return m_data;
+    return cmatrix<T>::copy();
 }

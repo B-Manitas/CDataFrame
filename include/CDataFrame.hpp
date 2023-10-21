@@ -22,11 +22,10 @@
  * @tparam T The type of the data.
  */
 template <typename T>
-class cdata_frame
+class cdata_frame : public cmatrix<T>
 {
 private:
     std::vector<std::string> m_keys = std::vector<std::string>();
-    cmatrix<T> m_data = cmatrix<T>();
 
 public:
     // Constructors
