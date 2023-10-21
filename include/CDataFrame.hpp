@@ -108,6 +108,17 @@ public:
      * @ingroup manipulation
      */
     void insert_row(const size_t &pos, const std::vector<T> &val);
+    /**
+     * @brief Insert a column at the given position.
+     *
+     * @param pos The position of the column.
+     * @param val The column to insert.
+     * @param key The key of the column.
+     * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
+     *
+     * @ingroup manipulation
+     */
+    void insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key = "");
 };
 
 #include "../src/CDataFrameConstructor.tpp"

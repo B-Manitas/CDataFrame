@@ -180,6 +180,34 @@ TEST(CDataFrameTest, insert_row)
     EXPECT_THROW(df4.insert_row(0, {7, 8, 9, 10}), std::invalid_argument);
 }
 
+TEST(CDataFrameTest, insert_column)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    df.insert_column(0, {1, 2, 3});
+    EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    df2.insert_column(0, {1, 2, 3}, "d");
+    EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    df3.insert_column(0, {7, 8});
+    EXPECT_EQ(df3.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.insert_column(0, {7, 8}, "d");
+    EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
+
+    // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df4.insert_column(0, {7, 8, 9}), std::invalid_argument);
+    EXPECT_THROW(df4.insert_column(0, {7, 8, 9, 10}), std::invalid_argument);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
