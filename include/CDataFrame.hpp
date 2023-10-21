@@ -96,9 +96,22 @@ public:
      * @ingroup setter
      */
     void set_data(const cmatrix<T> &data);
+
+    // Manipulation
+    /**
+     * @brief Insert a row at the given position.
+     *
+     * @param pos The position of the row.
+     * @param val The row to insert.
+     * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
+     *
+     * @ingroup manipulation
+     */
+    void insert_row(const size_t &pos, const std::vector<T> &val);
 };
 
-#include "../src/CDataFrame.tpp"
 #include "../src/CDataFrameConstructor.tpp"
 #include "../src/CDataFrameGetter.tpp"
+#include "../src/CDataFrameManipulation.tpp"
 #include "../src/CDataFrameSetter.tpp"
+#include "../src/CDataFrame.tpp"
