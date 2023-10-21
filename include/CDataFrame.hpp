@@ -29,6 +29,15 @@ class cdata_frame : public cmatrix<T>
 private:
     std::vector<std::string> m_keys = std::vector<std::string>();
 
+    // MANIPULATION
+    /**
+     * @brief Remove a key at the given position.
+     * 
+     * @param pos The position of the key.
+     * 
+     * @ingroup manipulation
+     */
+    void __remove_key(const size_t &pos);
     /**
      * @brief Generate unique keys.
      *
@@ -169,6 +178,22 @@ public:
      * @ingroup manipulation
      */
     void push_column_back(const std::vector<T> &val, const std::string &key = "");
+    /**
+     * @brief Remove a row at the given position.
+     *
+     * @param pos The position of the row.
+     *
+     * @ingroup manipulation
+     */
+    void remove_row(const size_t &pos);
+    /**
+     * @brief Remove a column at the given position.
+     *
+     * @param pos The position of the column.
+     *
+     * @ingroup manipulation
+     */
+    void remove_column(const size_t &pos);
 };
 
 #include "../src/CDataFrameConstructor.tpp"

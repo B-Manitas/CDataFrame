@@ -326,6 +326,62 @@ TEST(TestManipulation, push_column_back)
     EXPECT_THROW(df4.push_column_back({7, 8, 9, 10}), std::invalid_argument);
 }
 
+TEST(TestManipulation, remove_row)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.remove_row(0), std::out_of_range);
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    EXPECT_THROW(df2.remove_row(0), std::out_of_range);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    df3.remove_row(1);
+    EXPECT_EQ(df3.data(), (cmatrix<int>{{1, 2, 3}}));
+    df3.remove_row(0);
+    EXPECT_TRUE(df3.data().is_empty());
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.remove_row(0);
+    EXPECT_EQ(df4.data(), (cmatrix<int>{{4, 5, 6}}));
+    df4.remove_row(0);
+    EXPECT_TRUE(df4.data().is_empty());
+}
+
+TEST(TestManipulation, remove_column)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.remove_column(0), std::out_of_range);
+
+    // DF WITH KEYS
+    cdata_frame<int> df2({"a", "b", "c"});
+    EXPECT_THROW(df2.remove_column(0), std::out_of_range);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    df3.remove_column(1);
+    EXPECT_EQ(df3.data(), (cmatrix<int>{{1, 3}, {4, 6}}));
+    df3.remove_column(0);
+    EXPECT_EQ(df3.data(), (cmatrix<int>{{3}, {6}}));
+    df3.remove_column(0);
+    EXPECT_TRUE(df3.data().is_empty());
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.remove_column(0);
+    EXPECT_EQ(df4.data(), (cmatrix<int>{{2, 3}, {5, 6}}));
+    df4.remove_column(1);
+    EXPECT_EQ(df4.data(), (cmatrix<int>{{2}, {5}}));
+    df4.remove_column(0);
+    EXPECT_TRUE(df4.data().is_empty());
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

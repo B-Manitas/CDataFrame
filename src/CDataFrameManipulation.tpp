@@ -57,3 +57,30 @@ void cdata_frame<T>::push_column_back(const std::vector<T> &val, const std::stri
 {
     insert_column(cmatrix<T>::dim_h(), val, key);
 }
+
+// ==================================================
+// REMOVE
+
+template <class T>
+void cdata_frame<T>::__remove_key(const size_t &pos)
+{
+    if (not m_keys.empty())
+        m_keys.erase(m_keys.begin() + pos);
+    
+    else if (cmatrix<T>::is_empty())
+        m_keys.clear();
+}
+
+template <class T>
+void cdata_frame<T>::remove_row(const size_t &pos)
+{
+    cmatrix<T>::remove_row(pos);
+    __remove_key(pos);
+}
+
+template <class T>
+void cdata_frame<T>::remove_column(const size_t &pos)
+{
+    cmatrix<T>::remove_column(pos);
+    __remove_key(pos);
+}
