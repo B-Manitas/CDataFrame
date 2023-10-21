@@ -28,6 +28,15 @@ class cdata_frame : public cmatrix<T>
 private:
     std::vector<std::string> m_keys = std::vector<std::string>();
 
+    /**
+     * @brief Generate unique keys.
+     *
+     * @param prefix The prefix of the keys. Default is 'key_'.
+     * @return std::vector<std::string> The unique keys.
+     *
+     * @ingroup general
+     */
+    std::vector<std::string> __generate_uid_keys(const std::string &prefix = "key_") const;
 public:
     // CONSTRUCTOR
     /**
@@ -116,6 +125,7 @@ public:
      * @param key The key of the column.
      * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
      *
+     * @note If the keys are empty, the keys will be generated.
      * @ingroup manipulation
      */
     void insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key = "");

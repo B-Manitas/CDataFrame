@@ -186,6 +186,9 @@ TEST(TestManipulation, insert_column)
     cdata_frame<int> df;
     df.insert_column(0, {1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
+    df.insert_column(0, {4, 5, 6}, "d");
+    EXPECT_EQ(df.data(), (cmatrix<int>{{4, 1}, {5, 2}, {6, 3}}));
+    EXPECT_EQ(df.keys().at(0), "d");
 
     // DF WITH KEYS
     cdata_frame<int> df2({"a", "b", "c"});

@@ -24,6 +24,9 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
     if (not m_keys.empty() and key.empty())
         throw std::invalid_argument("The key is empty.");
 
+    if (m_keys.empty())
+        m_keys = __generate_uid_keys();
+
     m_keys.insert(m_keys.begin() + pos, key);
     cmatrix<T>::insert_column(pos, val);
 }
