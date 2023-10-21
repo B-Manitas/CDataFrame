@@ -167,7 +167,7 @@ public:
      *
      * @ingroup manipulation
      */
-    void push_column_front(const std::vector<T> &val, const std::string &key = "");
+    void push_col_front(const std::vector<T> &val, const std::string &key = "");
     /**
      * @brief Push a column at the back of the data.
      *
@@ -177,7 +177,7 @@ public:
      *
      * @ingroup manipulation
      */
-    void push_column_back(const std::vector<T> &val, const std::string &key = "");
+    void push_col_back(const std::vector<T> &val, const std::string &key = "");
     /**
      * @brief Remove a row at the given position.
      *

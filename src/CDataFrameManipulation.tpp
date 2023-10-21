@@ -47,13 +47,13 @@ void cdata_frame<T>::push_row_back(const std::vector<T> &val)
 }
 
 template <class T>
-void cdata_frame<T>::push_column_front(const std::vector<T> &val, const std::string &key)
+void cdata_frame<T>::push_col_front(const std::vector<T> &val, const std::string &key)
 {
     insert_column(0, val, key);
 }
 
 template <class T>
-void cdata_frame<T>::push_column_back(const std::vector<T> &val, const std::string &key)
+void cdata_frame<T>::push_col_back(const std::vector<T> &val, const std::string &key)
 {
     insert_column(cmatrix<T>::dim_h(), val, key);
 }

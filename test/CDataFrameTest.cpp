@@ -270,60 +270,60 @@ TEST(TestManipulation, push_row_back)
     EXPECT_THROW(df4.push_row_back({7, 8, 9, 10}), std::invalid_argument);
 }
 
-TEST(TestManipulation, push_column_front)
+TEST(TestManipulation, push_col_front)
 {
     // DF EMPTY
     cdata_frame<int> df;
-    df.push_column_front({1, 2, 3});
+    df.push_col_front({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH KEYS
     cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_column_front({1, 2, 3}, "d");
+    df2.push_col_front({1, 2, 3}, "d");
     EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
-    df3.push_column_front({7, 8});
+    df3.push_col_front({7, 8});
     EXPECT_EQ(df3.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
-    df4.push_column_front({7, 8}, "d");
+    df4.push_col_front({7, 8}, "d");
     EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df4.push_column_front({7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.push_column_front({7, 8, 9, 10}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_front({7, 8, 9}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_front({7, 8, 9, 10}), std::invalid_argument);
 }
 
-TEST(TestManipulation, push_column_back)
+TEST(TestManipulation, push_col_back)
 {
     // DF EMPTY
     cdata_frame<int> df;
-    df.push_column_back({1, 2, 3});
+    df.push_col_back({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH KEYS
     cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_column_back({1, 2, 3}, "d");
+    df2.push_col_back({1, 2, 3}, "d");
     EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
-    df3.push_column_back({7, 8});
+    df3.push_col_back({7, 8});
     EXPECT_EQ(df3.data(), (cmatrix<int>{{1, 2, 3, 7}, {4, 5, 6, 8}}));
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
-    df4.push_column_back({7, 8}, "d");
+    df4.push_col_back({7, 8}, "d");
     EXPECT_EQ(df4.data(), (cmatrix<int>{{1, 2, 3, 7}, {4, 5, 6, 8}}));
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df4.push_column_back({7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.push_column_back({7, 8, 9, 10}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_back({7, 8, 9}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_back({7, 8, 9, 10}), std::invalid_argument);
 }
 
 TEST(TestManipulation, remove_row)
