@@ -87,6 +87,25 @@ TEST(TestGetter, data)
     EXPECT_EQ(df4.data(), data);
 }
 
+TEST(TestGetter, columns)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.columns("a"), std::invalid_argument);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    EXPECT_THROW(df3.columns("a"), std::invalid_argument);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_EQ(df4.columns("a"), cmatrix<int>({{1}, {4}}));
+    EXPECT_EQ(df4.columns({"b", "c", "b"}), cmatrix<int>({{2, 3, 2}, {5, 6, 5}}));
+    EXPECT_THROW(df4.columns("d"), std::invalid_argument);
+    EXPECT_THROW(df4.columns({"a", "e"}), std::invalid_argument);
+}
+
 // ==================================================
 // SETTER
 

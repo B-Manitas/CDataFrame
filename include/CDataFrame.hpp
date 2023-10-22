@@ -30,6 +30,18 @@ class cdata_frame : public cmatrix<T>
 private:
     std::vector<std::string> m_keys = std::vector<std::string>();
 
+    // GETTER
+    /**
+     * @brief Get the position id of the key.
+     *
+     * @param key The key to get the index.
+     * @return size_t The position id of the key.
+     * @throw std::invalid_argument If the key doesn't exist.
+     *
+     * @ingroup getter
+     */
+    size_t __id_of_key(const std::string &key) const;
+
     // MANIPULATION
     /**
      * @brief Remove a key at the given position.
@@ -165,6 +177,33 @@ public:
      * @ingroup getter
      */
     cmatrix<T> data() const;
+    /**
+     * @brief Get the columns corresponding to the given keys.
+     * 
+     * @param keys The keys of the columns to get.
+     * @return cmatrix<T> The columns corresponding to the given keys.
+     * 
+     * @ingroup getter
+     */
+    cmatrix<T> columns(const std::string &key) const;
+    /**
+     * @brief Get the columns corresponding to the given keys.
+     * 
+     * @param keys The keys of the columns to get.
+     * @return cmatrix<T> The columns corresponding to the given keys.
+     * 
+     * @ingroup getter
+     */
+    cmatrix<T> columns(const std::initializer_list<std::string> &keys) const;
+    /**
+     * @brief Get the columns corresponding to the given keys.
+     * 
+     * @param keys The keys of the columns to get.
+     * @return cmatrix<T> The columns corresponding to the given keys.
+     * 
+     * @ingroup getter
+     */
+    cmatrix<T> columns(const std::vector<std::string> &keys) const;
 
     // SETTER
     /**
