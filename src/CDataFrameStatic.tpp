@@ -87,5 +87,8 @@ cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep
         first_line = false;
     }
 
+    // Close the file
+    file.close();
+
     return df;
 }
