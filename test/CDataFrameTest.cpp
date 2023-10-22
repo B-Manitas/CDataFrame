@@ -211,10 +211,10 @@ TEST(TestManipulation, insert_column)
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.insert_column(0, {7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.insert_column(0, {7, 8, 9, 10}), std::invalid_argument);
+    EXPECT_THROW(df4.insert_column(0, {7, 8, 9, 10}), std::runtime_error);
 
     // DF WITH KEYS NOT UNIQUE
-    EXPECT_THROW(df4.insert_column(0, {7, 8}, "a"), std::invalid_argument);
+    EXPECT_THROW(df4.insert_column(0, {7, 8}, "a"), std::runtime_error);
 }
 
 TEST(TestManipulation, push_row_front)
@@ -300,7 +300,7 @@ TEST(TestManipulation, push_col_front)
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.push_col_front({7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.push_col_front({7, 8, 9, 10}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_front({7, 8, 9, 10}), std::runtime_error);
 }
 
 TEST(TestManipulation, push_col_back)
@@ -328,7 +328,7 @@ TEST(TestManipulation, push_col_back)
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.push_col_back({7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.push_col_back({7, 8, 9, 10}), std::invalid_argument);
+    EXPECT_THROW(df4.push_col_back({7, 8, 9, 10}), std::runtime_error);
 }
 
 TEST(TestManipulation, remove_row)

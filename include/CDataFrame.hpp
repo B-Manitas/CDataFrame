@@ -51,6 +51,25 @@ private:
      */
     std::vector<std::string> __generate_uid_keys(const std::string &prefix = "key_") const;
 
+    // CHECK
+    /**
+     * @brief Check if the keys are unique.
+     *
+     * @throw std::runtime_error If the keys are not unique.
+     *
+     * @ingroup check
+     */
+    void __check_unique_keys(const std::string &key) const;
+    /**
+     * @brief Check if the row is valid.
+     *
+     * @param val The row to check.
+     * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
+     *
+     * @ingroup check
+     */
+    void __check_valid_row(const std::vector<T> &val) const;
+
     // STATIC
     /**
      * @brief Check if a file exists.
@@ -256,6 +275,7 @@ public:
     static cdata_frame<T> read_csv(const std::string &path, const char &sep = ',', const bool &header = true);
 };
 
+#include "../src/CDataFrameCheck.tpp"
 #include "../src/CDataFrameConstructor.tpp"
 #include "../src/CDataFrameGetter.tpp"
 #include "../src/CDataFrameManipulation.tpp"

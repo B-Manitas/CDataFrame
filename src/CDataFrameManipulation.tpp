@@ -12,9 +12,7 @@
 template <class T>
 void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val)
 {
-    if (not m_keys.empty() and val.size() != m_keys.size())
-        throw std::invalid_argument("The number of columns is different from the number of keys.");
-
+    __check_valid_row(val);
     cmatrix<T>::insert_row(pos, val);
 }
 
@@ -27,8 +25,7 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
         if (key != "")
         {
             // Check if the key doesn't already exist
-            if (not m_keys.empty() && std::find(m_keys.begin(), m_keys.end(), key) != m_keys.end())
-                throw std::invalid_argument("The key '" + key + "' already exists.");
+            __check_unique_keys(key);
 
             // Generate unique keys and insert the new key
             m_keys = __generate_uid_keys();
@@ -40,8 +37,7 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
     else
     {
         // Check if the key doesn't already exist
-        if (not m_keys.empty() && std::find(m_keys.begin(), m_keys.end(), key) != m_keys.end())
-            throw std::invalid_argument("The key '" + key + "' already exists.");
+        __check_unique_keys(key);
 
         // Insert the new key
         m_keys.insert(m_keys.begin() + pos, key);
