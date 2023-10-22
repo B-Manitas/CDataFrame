@@ -55,14 +55,15 @@ private:
 
     // General
     /**
-     * @brief Generate unique keys.
+     * @brief Generate unique index.
      *
+     * @param not_in The index to not generate.
      * @param prefix The prefix of the keys. Default is 'key_'.
      * @return std::vector<std::string> The unique keys.
      *
      * @ingroup general
      */
-    std::vector<std::string> __generate_uid_keys(const std::string &prefix = "key_") const;
+    std::vector<std::string> __generate_uids(const std::string &not_in) const;
 
     // CHECK
     /**
@@ -73,6 +74,14 @@ private:
      * @ingroup check
      */
     void __check_unique_keys(const std::string &key) const;
+    /**
+     * @brief Check if the index are unique.
+     *
+     * @throw std::runtime_error If the index are not unique.
+     *
+     * @ingroup check
+     */
+    void __check_unique_index(const std::string &index) const;
     /**
      * @brief Check if the row is valid.
      *
@@ -269,11 +278,13 @@ public:
      *
      * @param pos The position of the row.
      * @param val The row to insert.
+     * @param index The index of the row.
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
+     * @note If the index are empty, the index will be generated.
      * @ingroup manipulation
      */
-    void insert_row(const size_t &pos, const std::vector<T> &val);
+    void insert_row(const size_t &pos, const std::vector<T> &val, const std::string &index = "");
     /**
      * @brief Insert a column at the given position.
      *
@@ -290,20 +301,22 @@ public:
      * @brief Push a row at the front of the data.
      *
      * @param val The row to push.
+     * @param index The index of the row.
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
      * @ingroup manipulation
      */
-    void push_row_front(const std::vector<T> &val);
+    void push_row_front(const std::vector<T> &val, const std::string &index = "");
     /**
      * @brief Push a row at the back of the data.
      *
      * @param val The row to push.
+     * @param index The index of the row.
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
      * @ingroup manipulation
      */
-    void push_row_back(const std::vector<T> &val);
+    void push_row_back(const std::vector<T> &val, const std::string &index = "");
     /**
      * @brief Push a column at the front of the data.
      *

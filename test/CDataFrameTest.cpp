@@ -248,23 +248,29 @@ TEST(TestManipulation, insert_row)
 {
     // DF EMPTY
     cdata_frame<int> df;
-    df.insert_row(0, {1, 2, 3});
+    df.insert_row(0, {1, 2, 3}, "a");
     EXPECT_EQ(df.data(), (cmatrix<int>{{1, 2, 3}}));
+    EXPECT_EQ(df.index().at(0), "a");
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
-    df3.insert_row(0, {7, 8, 9});
+    df3.insert_row(0, {7, 8, 9}, "a");
     EXPECT_EQ(df3.data(), (cmatrix<int>{{7, 8, 9}, {1, 2, 3}, {4, 5, 6}}));
+    EXPECT_EQ(df3.index().at(0), "a");
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
-    df4.insert_row(0, {7, 8, 9});
+    df4.insert_row(0, {7, 8, 9}, "d");
     EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 8, 9}, {1, 2, 3}, {4, 5, 6}}));
+    EXPECT_EQ(df4.index().at(0), "d");
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df3.insert_row(0, {7, 8, 9, 10}), std::invalid_argument);
     EXPECT_THROW(df4.insert_row(0, {7, 8}), std::invalid_argument);
-    EXPECT_THROW(df4.insert_row(0, {7, 8, 9, 10}), std::invalid_argument);
+
+    // DF WITH KEYS NOT UNIQUE
+    EXPECT_THROW(df4.insert_row(0, {7, 8, 9}, "d"), std::runtime_error);
 }
 
 TEST(TestManipulation, insert_column)
@@ -291,8 +297,8 @@ TEST(TestManipulation, insert_column)
     EXPECT_EQ(df4.keys().at(0), "d");
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df3.insert_column(0, {7, 8, 9, 10}), std::invalid_argument);
     EXPECT_THROW(df4.insert_column(0, {7, 8, 9}), std::invalid_argument);
-    EXPECT_THROW(df4.insert_column(0, {7, 8, 9, 10}), std::runtime_error);
 
     // DF WITH KEYS NOT UNIQUE
     EXPECT_THROW(df4.insert_column(0, {7, 8}, "a"), std::runtime_error);

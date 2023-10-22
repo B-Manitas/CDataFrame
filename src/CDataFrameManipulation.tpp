@@ -10,9 +10,32 @@
 // INSERT
 
 template <class T>
-void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val)
+void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val, const std::string &index)
 {
-    __check_valid_row(val);
+    if (m_index.empty())
+    {
+        // User want insert an index
+        if (index != "")
+        {
+            // Check if the index doesn't already exist
+            __check_unique_index(index);
+
+            // Generate unique index and insert the new index
+            m_index = __generate_uids(index);
+            m_index.insert(m_index.begin() + pos, index);
+        }
+    }
+
+    // User want insert empty index
+    else
+    {
+        // Check if the index doesn't already exist
+        __check_unique_index(index);
+
+        // Insert the new index
+        m_index.insert(m_index.begin() + pos, index);
+    }
+
     cmatrix<T>::insert_row(pos, val);
 }
 
@@ -28,7 +51,7 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
             __check_unique_keys(key);
 
             // Generate unique keys and insert the new key
-            m_keys = __generate_uid_keys();
+            m_keys = __generate_uids(key);
             m_keys.insert(m_keys.begin() + pos, key);
         }
     }
@@ -50,15 +73,15 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
 // PUSH
 
 template <class T>
-void cdata_frame<T>::push_row_front(const std::vector<T> &val)
+void cdata_frame<T>::push_row_front(const std::vector<T> &val, const std::string &index)
 {
-    insert_row(0, val);
+    insert_row(0, val, index);
 }
 
 template <class T>
-void cdata_frame<T>::push_row_back(const std::vector<T> &val)
+void cdata_frame<T>::push_row_back(const std::vector<T> &val, const std::string &index)
 {
-    insert_row(cmatrix<T>::dim_v(), val);
+    insert_row(cmatrix<T>::dim_v(), val, index);
 }
 
 template <class T>
