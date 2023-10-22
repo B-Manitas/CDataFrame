@@ -17,6 +17,7 @@ TEST(TestConstructor, Constructor)
     // DF EMPTY
     cdata_frame<int> df;
     EXPECT_EQ(df.keys().size(), 0);
+    EXPECT_EQ(df.index().size(), 0);
     EXPECT_EQ(df.data().dim_h(), 0);
     EXPECT_EQ(df.data().dim_v(), 0);
 
@@ -24,18 +25,38 @@ TEST(TestConstructor, Constructor)
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
     EXPECT_EQ(df3.keys().size(), 0);
+    EXPECT_EQ(df3.index().size(), 0);
     EXPECT_EQ(df3.data(), data);
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
     EXPECT_EQ(df4.keys().size(), 3);
+    EXPECT_EQ(df4.index().size(), 0);
     EXPECT_EQ(df4.data(), data);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    EXPECT_EQ(df5.keys().size(), 0);
+    EXPECT_EQ(df5.index(), (std::vector<std::string>{"a", "b"}));
+    EXPECT_EQ(df5.data(), data);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_EQ(df6.keys().size(), 3);
+    EXPECT_EQ(df6.index(), (std::vector<std::string>{"a", "b"}));
+    EXPECT_EQ(df6.data(), data);
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(cdata_frame<int>({"a", "b", "c"}, cmatrix<int>(3, 2)), std::invalid_argument);
 
     // DF WITH KEYS NOT UNIQUE
     EXPECT_THROW(cdata_frame<int>({"a", "b", "b"}, cmatrix<int>(3, 3)), std::invalid_argument);
+
+    // DF WITH INDEX SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(cdata_frame<int>(cmatrix<int>(3, 2), {"a", "b", "c", "d"}), std::invalid_argument);
+
+    // DF WITH INDEX NOT UNIQUE
+    EXPECT_THROW(cdata_frame<int>(cmatrix<int>(3, 3), {"a", "b", "b"}), std::invalid_argument);
 }
 
 // ==================================================
@@ -55,6 +76,38 @@ TEST(TestGetter, keys)
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
     EXPECT_EQ(df4.keys(), (std::vector<std::string>{"a", "b", "c"}));
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    EXPECT_TRUE(df5.keys().empty());
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_EQ(df6.keys(), (std::vector<std::string>{"a", "b", "c"}));
+}
+
+TEST(TestGetter, index)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_TRUE(df.index().empty());
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    EXPECT_TRUE(df3.index().empty());
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_TRUE(df4.index().empty());
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    EXPECT_EQ(df5.index(), (std::vector<std::string>{"a", "b"}));
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_EQ(df6.index(), (std::vector<std::string>{"a", "b"}));
 }
 
 TEST(TestGetter, data)
@@ -121,6 +174,37 @@ TEST(TestSetter, set_keys)
     EXPECT_THROW(df4.set_keys({"a", "b", "b"}), std::invalid_argument);
 }
 
+TEST(TestSetter, set_index)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.set_index({"a", "b", "c"}), std::invalid_argument);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    df3.set_index({"a", "b"});
+    EXPECT_EQ(df3.index(), (std::vector<std::string>{"a", "b"}));
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    df4.set_index({"d", "e"});
+    EXPECT_EQ(df4.index(), (std::vector<std::string>{"d", "e"}));
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    df5.set_index({"d", "e"});
+    EXPECT_EQ(df5.index(), (std::vector<std::string>{"d", "e"}));
+    df5.set_index({});
+    EXPECT_TRUE(df5.index().empty());
+
+    // DF WITH INDEX SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df4.set_index({"a", "b", "c"}), std::invalid_argument);
+
+    // DF WITH INDEX NOT UNIQUE
+    EXPECT_THROW(df4.set_index({"a", "a"}), std::invalid_argument);
+}
+
 TEST(TestSetter, set_data)
 {
     // DF EMPTY
@@ -140,7 +224,20 @@ TEST(TestSetter, set_data)
     df4.set_data(data2);
     EXPECT_EQ(df4.data(), data2);
 
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    df5.set_data(data2);
+    EXPECT_EQ(df5.data(), data2);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    df6.set_data(data2);
+    EXPECT_EQ(df6.data(), data2);
+
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
+    EXPECT_THROW(df4.set_data(cmatrix<int>(3, 2)), std::invalid_argument);
+
+    // DF WITH INDEX SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.set_data(cmatrix<int>(3, 2)), std::invalid_argument);
 }
 

@@ -25,6 +25,21 @@ cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<
     set_data(data);
 }
 
+template <class T>
+cdata_frame<T>::cdata_frame(const cmatrix<T> &data, const std::vector<std::string> &index)
+{
+    set_data(data);
+    set_index(index);
+}
+
+template <class T>
+cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data, const std::vector<std::string> &index)
+{
+    set_data(data);
+    set_keys(keys);
+    set_index(index);
+}
+
 // ==================================================
 // Destructor
 template <class T>
