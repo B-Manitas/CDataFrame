@@ -387,6 +387,56 @@ TEST(TestManipulation, remove_column)
     EXPECT_TRUE(df4.data().is_empty());
 }
 
+// ==================================================
+// STATIC
+
+TEST(TestStatic, read_csv)
+{
+    // DF EMPTY
+    cdata_frame<std::string> df = cdata_frame<std::string>::read_csv("test/input/empty.csv");
+    EXPECT_TRUE(df.keys().empty());
+    EXPECT_TRUE(df.data().is_empty());
+
+    // DF WITH KEYS
+    cdata_frame<std::string> df2 = cdata_frame<std::string>::read_csv("test/input/header.csv");
+    std::vector<std::string> header = {"Nom", "Prénom", "Âge", "Ville", "Salaire"};
+    EXPECT_EQ(df2.keys(), header);
+    EXPECT_TRUE(df2.data().is_empty());
+
+    // DF WITH DATA
+    cdata_frame<std::string> df3 = cdata_frame<std::string>::read_csv("test/input/valid.csv", ',', false);
+    cmatrix<std::string> data({{"Doe", "John", "30", "New York", "50000"},
+                               {"Smith", "Jane", "25", "Los Angeles", "60000"},
+                               {"Johnson", "Michael", "35", "Chicago", "75000"}});
+    EXPECT_TRUE(df3.keys().empty());
+    EXPECT_EQ(df3.data(), data);
+
+    cdata_frame<std::string> df3_2 = cdata_frame<std::string>::read_csv("test/input/valid_2.csv", ',', false);
+    cmatrix<std::string> data2({{"Lorem ipsum dolor sit ame"}});
+    EXPECT_TRUE(df3_2.keys().empty());
+    EXPECT_EQ(df3_2.data(), data2);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<std::string> df4 = cdata_frame<std::string>::read_csv("test/input/valid_with_header.csv");
+    EXPECT_EQ(df4.keys(), header);
+    EXPECT_EQ(df4.data(), data);
+
+    // INVALID PATH
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/no_path.csv"), std::invalid_argument);
+
+    // INVALID EXTENSION
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/file.txt"), std::invalid_argument);
+
+    // INVVALID DATA
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_data.csv"), std::invalid_argument);
+
+    // INVALID HEADER
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header.csv"), std::invalid_argument);
+
+    // KEYS NOT UNIQUE
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_2.csv"), std::invalid_argument);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

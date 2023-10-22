@@ -14,6 +14,7 @@
 #include <string>
 #include <tuple>
 #include <initializer_list>
+#include <fstream>
 #include <vector>
 
 #include "../lib/CMatrix/include/CMatrix.hpp"
@@ -32,12 +33,14 @@ private:
     // MANIPULATION
     /**
      * @brief Remove a key at the given position.
-     * 
+     *
      * @param pos The position of the key.
-     * 
+     *
      * @ingroup manipulation
      */
     void __remove_key(const size_t &pos);
+
+    // General
     /**
      * @brief Generate unique keys.
      *
@@ -47,6 +50,51 @@ private:
      * @ingroup general
      */
     std::vector<std::string> __generate_uid_keys(const std::string &prefix = "key_") const;
+
+    // STATIC
+    /**
+     * @brief Check if a file exists.
+     *
+     * @param path The path of the file.
+     * @return true If the file exists.
+     * @return false If the file doesn't exist.
+     *
+     * @ingroup static
+     */
+    static bool __is_file_exist(const std::string &path);
+    /**
+     * @brief Check if a file has expected extension.
+     *
+     * @param path The path of the file.
+     * @param extension The expected extension.
+     *
+     * @return true If the file has expected extension.
+     * @return false If the file doesn't have expected extension.
+     *
+     * @ingroup static
+     */
+    static bool __has_expected_extension(const std::string &path, const std::string &extension);
+    /**
+     * @brief Open a file.
+     *
+     * @param path The path of the file.
+     * @return std::fstream& The file opened.
+     * @throw std::invalid_argument If the file doesn't exist.
+     * @throw std::runtime_error If the file can't be opened.
+     *
+     * @ingroup static
+     */
+    static std::fstream __open_file(const std::string &path);
+    /**
+     * @brief Parse a line of a csv file.
+     *
+     * @param line The line to parse.
+     * @param sep The separator of the csv file.
+     * @return std::vector<std::string> The line parsed.
+     *
+     * @ingroup static
+     */
+    static std::vector<std::string> __parse_csv_line(std::string line, const char sep);
 
 public:
     // CONSTRUCTOR
@@ -194,10 +242,23 @@ public:
      * @ingroup manipulation
      */
     void remove_column(const size_t &pos);
+
+    // STATIC
+    /**
+     * @brief Read a csv file.
+     *
+     * @param path The path of the csv file.
+     * @param sep The separator of the csv file. Default is ','.
+     * @param header If the csv file has a header. Default is true.
+     *
+     * @ingroup general
+     */
+    static cdata_frame<T> read_csv(const std::string &path, const char &sep = ',', const bool &header = true);
 };
 
 #include "../src/CDataFrameConstructor.tpp"
 #include "../src/CDataFrameGetter.tpp"
 #include "../src/CDataFrameManipulation.tpp"
 #include "../src/CDataFrameSetter.tpp"
+#include "../src/CDataFrameStatic.tpp"
 #include "../src/CDataFrame.tpp"
