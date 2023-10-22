@@ -236,7 +236,10 @@ public:
      * @brief Set the keys.
      *
      * @param keys
-     *
+     * @throw std::invalid_argument If the number of keys is different from the number of columns of the data.
+     * @throw std::invalid_argument If the keys are not unique.
+     * 
+     * @note If data is empty, the keys are empty.
      * @ingroup setter
      */
     void set_keys(const std::vector<std::string> &keys);
@@ -244,7 +247,10 @@ public:
      * @brief Set the index.
      *
      * @param index
+     * @throw std::invalid_argument If the number of index is different from the number of rows of the data.
+     * @throw std::invalid_argument If the index are not unique.
      *
+     * @note If data is empty, the index are empty.
      * @ingroup setter
      */
     void set_index(const std::vector<std::string> &index);
