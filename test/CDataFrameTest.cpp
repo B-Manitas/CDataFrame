@@ -201,15 +201,20 @@ TEST(TestManipulation, insert_column)
     cdata_frame<int> df3(data);
     df3.insert_column(0, {7, 8});
     EXPECT_EQ(df3.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
+    EXPECT_TRUE(df3.keys().empty());
 
     // DF WITH KEYS AND DATA
     cdata_frame<int> df4({"a", "b", "c"}, data);
     df4.insert_column(0, {7, 8}, "d");
     EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 1, 2, 3}, {8, 4, 5, 6}}));
+    EXPECT_EQ(df4.keys().at(0), "d");
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
     EXPECT_THROW(df4.insert_column(0, {7, 8, 9}), std::invalid_argument);
     EXPECT_THROW(df4.insert_column(0, {7, 8, 9, 10}), std::invalid_argument);
+
+    // DF WITH KEYS NOT UNIQUE
+    EXPECT_THROW(df4.insert_column(0, {7, 8}, "a"), std::invalid_argument);
 }
 
 TEST(TestManipulation, push_row_front)

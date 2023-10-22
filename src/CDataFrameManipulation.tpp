@@ -21,13 +21,32 @@ void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val)
 template <class T>
 void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key)
 {
-    if (not m_keys.empty() and key.empty())
-        throw std::invalid_argument("The key is empty.");
-
     if (m_keys.empty())
-        m_keys = __generate_uid_keys();
+    {
+        // User want insert a key
+        if (key != "")
+        {
+            // Check if the key doesn't already exist
+            if (not m_keys.empty() && std::find(m_keys.begin(), m_keys.end(), key) != m_keys.end())
+                throw std::invalid_argument("The key '" + key + "' already exists.");
 
-    m_keys.insert(m_keys.begin() + pos, key);
+            // Generate unique keys and insert the new key
+            m_keys = __generate_uid_keys();
+            m_keys.insert(m_keys.begin() + pos, key);
+        }
+    }
+
+    // User want insert empty key
+    else
+    {
+        // Check if the key doesn't already exist
+        if (not m_keys.empty() && std::find(m_keys.begin(), m_keys.end(), key) != m_keys.end())
+            throw std::invalid_argument("The key '" + key + "' already exists.");
+
+        // Insert the new key
+        m_keys.insert(m_keys.begin() + pos, key);
+    }
+
     cmatrix<T>::insert_column(pos, val);
 }
 
