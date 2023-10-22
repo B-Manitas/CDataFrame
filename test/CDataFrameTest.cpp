@@ -20,11 +20,6 @@ TEST(TestConstructor, Constructor)
     EXPECT_EQ(df.data().dim_h(), 0);
     EXPECT_EQ(df.data().dim_v(), 0);
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    EXPECT_EQ(df2.keys().size(), 3);
-    EXPECT_TRUE(df2.data().is_empty());
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -41,7 +36,6 @@ TEST(TestConstructor, Constructor)
 
     // DF WITH KEYS NOT UNIQUE
     EXPECT_THROW(cdata_frame<int>({"a", "b", "b"}, cmatrix<int>(3, 3)), std::invalid_argument);
-    EXPECT_THROW(cdata_frame<int>({"a", "b", "b"}), std::invalid_argument);
 }
 
 // ==================================================
@@ -52,10 +46,6 @@ TEST(TestGetter, keys)
     // DF EMPTY
     cdata_frame<int> df;
     EXPECT_TRUE(df.keys().empty());
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    EXPECT_EQ(df2.keys(), (std::vector<std::string>{"a", "b", "c"}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -72,10 +62,6 @@ TEST(TestGetter, data)
     // DF EMPTY
     cdata_frame<int> df;
     EXPECT_TRUE(df.data().is_empty());
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    EXPECT_TRUE(df2.data().is_empty());
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -116,11 +102,6 @@ TEST(TestSetter, set_keys)
     df.set_keys({"a", "b", "c"});
     EXPECT_EQ(df.keys(), (std::vector<std::string>{"a", "b", "c"}));
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.set_keys({"d", "e", "f"});
-    EXPECT_EQ(df2.keys(), (std::vector<std::string>{"d", "e", "f"}));
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -148,11 +129,6 @@ TEST(TestSetter, set_data)
     df.set_data(data);
     EXPECT_EQ(df.data(), data);
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.set_data(data);
-    EXPECT_EQ(df2.data(), data);
-
     // DF WITH DATA
     cmatrix<int> data2({{7, 8, 9}, {10, 11, 12}});
     cdata_frame<int> df3(data);
@@ -178,11 +154,6 @@ TEST(TestManipulation, insert_row)
     df.insert_row(0, {1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1, 2, 3}}));
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.insert_row(0, {1, 2, 3});
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1, 2, 3}}));
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -195,7 +166,6 @@ TEST(TestManipulation, insert_row)
     EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 8, 9}, {1, 2, 3}, {4, 5, 6}}));
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df2.insert_row(0, {1, 2}), std::invalid_argument);
     EXPECT_THROW(df4.insert_row(0, {7, 8}), std::invalid_argument);
     EXPECT_THROW(df4.insert_row(0, {7, 8, 9, 10}), std::invalid_argument);
 }
@@ -209,11 +179,6 @@ TEST(TestManipulation, insert_column)
     df.insert_column(0, {4, 5, 6}, "d");
     EXPECT_EQ(df.data(), (cmatrix<int>{{4, 1}, {5, 2}, {6, 3}}));
     EXPECT_EQ(df.keys().at(0), "d");
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.insert_column(0, {1, 2, 3}, "d");
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -243,11 +208,6 @@ TEST(TestManipulation, push_row_front)
     df.push_row_front({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1, 2, 3}}));
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_row_front({1, 2, 3});
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1, 2, 3}}));
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -260,7 +220,6 @@ TEST(TestManipulation, push_row_front)
     EXPECT_EQ(df4.data(), (cmatrix<int>{{7, 8, 9}, {1, 2, 3}, {4, 5, 6}}));
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df2.push_row_front({1, 2}), std::invalid_argument);
     EXPECT_THROW(df4.push_row_front({7, 8}), std::invalid_argument);
     EXPECT_THROW(df4.push_row_front({7, 8, 9, 10}), std::invalid_argument);
 }
@@ -271,11 +230,6 @@ TEST(TestManipulation, push_row_back)
     cdata_frame<int> df;
     df.push_row_back({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1, 2, 3}}));
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_row_back({1, 2, 3});
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1, 2, 3}}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -289,7 +243,6 @@ TEST(TestManipulation, push_row_back)
     EXPECT_EQ(df4.data(), (cmatrix<int>{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}}));
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df2.push_row_back({1, 2}), std::invalid_argument);
     EXPECT_THROW(df4.push_row_back({7, 8}), std::invalid_argument);
     EXPECT_THROW(df4.push_row_back({7, 8, 9, 10}), std::invalid_argument);
 }
@@ -300,11 +253,6 @@ TEST(TestManipulation, push_col_front)
     cdata_frame<int> df;
     df.push_col_front({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_col_front({1, 2, 3}, "d");
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -329,11 +277,6 @@ TEST(TestManipulation, push_col_back)
     df.push_col_back({1, 2, 3});
     EXPECT_EQ(df.data(), (cmatrix<int>{{1}, {2}, {3}}));
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    df2.push_col_back({1, 2, 3}, "d");
-    EXPECT_EQ(df2.data(), (cmatrix<int>{{1}, {2}, {3}}));
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -356,10 +299,6 @@ TEST(TestManipulation, remove_row)
     cdata_frame<int> df;
     EXPECT_THROW(df.remove_row(0), std::out_of_range);
 
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    EXPECT_THROW(df2.remove_row(0), std::out_of_range);
-
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
     cdata_frame<int> df3(data);
@@ -381,10 +320,6 @@ TEST(TestManipulation, remove_column)
     // DF EMPTY
     cdata_frame<int> df;
     EXPECT_THROW(df.remove_column(0), std::out_of_range);
-
-    // DF WITH KEYS
-    cdata_frame<int> df2({"a", "b", "c"});
-    EXPECT_THROW(df2.remove_column(0), std::out_of_range);
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});

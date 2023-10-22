@@ -19,12 +19,6 @@ cdata_frame<T>::cdata_frame(const cmatrix<T> &data)
 }
 
 template <class T>
-cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys)
-{
-    set_keys(keys);
-}
-
-template <class T>
 cdata_frame<T>::cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data)
 {
     set_keys(keys);

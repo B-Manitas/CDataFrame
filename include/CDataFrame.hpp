@@ -143,12 +143,6 @@ public:
      * @brief Construct a new CDataFrame object.
      *
      * @param keys The keys of the data.
-     */
-    cdata_frame(const std::vector<std::string> &keys);
-    /**
-     * @brief Construct a new CDataFrame object.
-     *
-     * @param keys The keys of the data.
      * @param data The cmatrix object containing the data.
      * @throw std::invalid_argument If the number of keys is different from the number of columns of the data.
      *
@@ -179,28 +173,28 @@ public:
     cmatrix<T> data() const;
     /**
      * @brief Get the columns corresponding to the given keys.
-     * 
+     *
      * @param keys The keys of the columns to get.
      * @return cmatrix<T> The columns corresponding to the given keys.
-     * 
+     *
      * @ingroup getter
      */
     cmatrix<T> columns(const std::string &key) const;
     /**
      * @brief Get the columns corresponding to the given keys.
-     * 
+     *
      * @param keys The keys of the columns to get.
      * @return cmatrix<T> The columns corresponding to the given keys.
-     * 
+     *
      * @ingroup getter
      */
     cmatrix<T> columns(const std::initializer_list<std::string> &keys) const;
     /**
      * @brief Get the columns corresponding to the given keys.
-     * 
+     *
      * @param keys The keys of the columns to get.
      * @return cmatrix<T> The columns corresponding to the given keys.
-     * 
+     *
      * @ingroup getter
      */
     cmatrix<T> columns(const std::vector<std::string> &keys) const;
