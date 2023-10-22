@@ -12,6 +12,7 @@
 // ==================================================
 // CONSTRUCTOR
 
+/** @brief Test the constructor of the 'DataFrame' class. */
 TEST(TestConstructor, Constructor)
 {
     // DF EMPTY
@@ -62,6 +63,7 @@ TEST(TestConstructor, Constructor)
 // ==================================================
 // GETTER
 
+/** @brief Test the 'keys' method of the 'DataFrame' class. */
 TEST(TestGetter, keys)
 {
     // DF EMPTY
@@ -86,6 +88,7 @@ TEST(TestGetter, keys)
     EXPECT_EQ(df6.keys(), (std::vector<std::string>{"a", "b", "c"}));
 }
 
+/** @brief Test the 'index' method of the 'DataFrame' class. */
 TEST(TestGetter, index)
 {
     // DF EMPTY
@@ -110,6 +113,7 @@ TEST(TestGetter, index)
     EXPECT_EQ(df6.index(), (std::vector<std::string>{"a", "b"}));
 }
 
+/** @brief Test the 'data' method of the 'DataFrame' class. */
 TEST(TestGetter, data)
 {
     // DF EMPTY
@@ -126,6 +130,7 @@ TEST(TestGetter, data)
     EXPECT_EQ(df4.data(), data);
 }
 
+/** @brief Test the 'row' method of the 'DataFrame' class. */
 TEST(TestGetter, columns)
 {
     // DF EMPTY
@@ -148,6 +153,7 @@ TEST(TestGetter, columns)
 // ==================================================
 // SETTER
 
+/** @brief Test the 'set_keys' method of the 'DataFrame' class. */
 TEST(TestSetter, set_keys)
 {
     // DF EMPTY
@@ -174,6 +180,7 @@ TEST(TestSetter, set_keys)
     EXPECT_THROW(df4.set_keys({"a", "b", "b"}), std::invalid_argument);
 }
 
+/** @brief Test the 'set_index' method of the 'DataFrame' class. */
 TEST(TestSetter, set_index)
 {
     // DF EMPTY
@@ -205,6 +212,7 @@ TEST(TestSetter, set_index)
     EXPECT_THROW(df4.set_index({"a", "a"}), std::invalid_argument);
 }
 
+/** @brief Test the 'set_data' method of the 'DataFrame' class. */
 TEST(TestSetter, set_data)
 {
     // DF EMPTY
@@ -244,6 +252,7 @@ TEST(TestSetter, set_data)
 // ==================================================
 // MANIPULATION
 
+/** @brief Test the 'insert_row' method of the 'DataFrame' class. */
 TEST(TestManipulation, insert_row)
 {
     // DF EMPTY
@@ -273,6 +282,7 @@ TEST(TestManipulation, insert_row)
     EXPECT_THROW(df4.insert_row(0, {7, 8, 9}, "d"), std::runtime_error);
 }
 
+/** @brief Test the 'insert_column' method of the 'DataFrame' class. */
 TEST(TestManipulation, insert_column)
 {
     // DF EMPTY
@@ -304,6 +314,7 @@ TEST(TestManipulation, insert_column)
     EXPECT_THROW(df4.insert_column(0, {7, 8}, "a"), std::runtime_error);
 }
 
+/** @brief Test the 'push_row_front' method of the 'DataFrame' class. */
 TEST(TestManipulation, push_row_front)
 {
     // DF EMPTY
@@ -327,6 +338,7 @@ TEST(TestManipulation, push_row_front)
     EXPECT_THROW(df4.push_row_front({7, 8, 9, 10}), std::invalid_argument);
 }
 
+/** @brief Test the 'push_row_back' method of the 'DataFrame' class. */
 TEST(TestManipulation, push_row_back)
 {
     // DF EMPTY
@@ -350,6 +362,7 @@ TEST(TestManipulation, push_row_back)
     EXPECT_THROW(df4.push_row_back({7, 8, 9, 10}), std::invalid_argument);
 }
 
+/** @brief Test the 'push_col_front' method of the 'DataFrame' class. */
 TEST(TestManipulation, push_col_front)
 {
     // DF EMPTY
@@ -373,6 +386,7 @@ TEST(TestManipulation, push_col_front)
     EXPECT_THROW(df4.push_col_front({7, 8, 9, 10}), std::runtime_error);
 }
 
+/** @brief Test the 'push_col_back' method of the 'DataFrame' class. */
 TEST(TestManipulation, push_col_back)
 {
     // DF EMPTY
@@ -396,6 +410,7 @@ TEST(TestManipulation, push_col_back)
     EXPECT_THROW(df4.push_col_back({7, 8, 9, 10}), std::runtime_error);
 }
 
+/** @brief Test the 'remove_row' method of the 'DataFrame' class. */
 TEST(TestManipulation, remove_row)
 {
     // DF EMPTY
@@ -418,6 +433,7 @@ TEST(TestManipulation, remove_row)
     EXPECT_TRUE(df4.data().is_empty());
 }
 
+/** @brief Test the 'remove_column' method of the 'DataFrame' class. */
 TEST(TestManipulation, remove_column)
 {
     // DF EMPTY
@@ -447,6 +463,7 @@ TEST(TestManipulation, remove_column)
 // ==================================================
 // STATIC
 
+/** @brief Test the 'read_csv' method of the 'DataFrame' class. */
 TEST(TestStatic, read_csv)
 {
     // DF EMPTY

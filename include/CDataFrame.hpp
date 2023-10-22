@@ -161,11 +161,11 @@ public:
     cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data);
     /**
      * @brief Construct a new CDataFrame object.
-     * 
+     *
      * @param index The index of the data.
      * @param data The cmatrix object containing the data.
      * @throw std::invalid_argument If the number of index is different from the number of rows of the data.
-     * 
+     *
      * @note The number of index must be equal to the number of rows of the data.
      */
     cdata_frame(const cmatrix<T> &data, const std::vector<std::string> &index);
@@ -247,7 +247,7 @@ public:
      * @param keys
      * @throw std::invalid_argument If the number of keys is different from the number of columns of the data.
      * @throw std::invalid_argument If the keys are not unique.
-     * 
+     *
      * @note If data is empty, the keys are empty.
      * @ingroup setter
      */
@@ -362,7 +362,7 @@ public:
      * @param sep The separator of the csv file. Default is ','.
      * @param header If the csv file has a header. Default is true.
      *  @return cdata_frame<T> The data frame read.
-     * 
+     *
      * @note If the header is enabled, the first line of the csv file will be used as keys.
      * @note If the data frame is empty, keys and index are empty.
      * @ingroup general
