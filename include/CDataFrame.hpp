@@ -342,7 +342,10 @@ public:
      * @param path The path of the csv file.
      * @param sep The separator of the csv file. Default is ','.
      * @param header If the csv file has a header. Default is true.
-     *
+     *  @return cdata_frame<T> The data frame read.
+     * 
+     * @note If the header is enabled, the first line of the csv file will be used as keys.
+     * @note If the data frame is empty, keys and index are empty.
      * @ingroup general
      */
     static cdata_frame<T> read_csv(const std::string &path, const char &sep = ',', const bool &header = true);

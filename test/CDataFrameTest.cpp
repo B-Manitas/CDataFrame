@@ -152,8 +152,7 @@ TEST(TestSetter, set_keys)
 {
     // DF EMPTY
     cdata_frame<int> df;
-    df.set_keys({"a", "b", "c"});
-    EXPECT_EQ(df.keys(), (std::vector<std::string>{"a", "b", "c"}));
+    EXPECT_THROW(df.set_keys({"a", "b", "c"}), std::invalid_argument);
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
@@ -165,9 +164,10 @@ TEST(TestSetter, set_keys)
     cdata_frame<int> df4({"a", "b", "c"}, data);
     df4.set_keys({"d", "e", "f"});
     EXPECT_EQ(df4.keys(), (std::vector<std::string>{"d", "e", "f"}));
+    df4.set_keys({});
+    EXPECT_TRUE(df4.keys().empty());
 
     // DF WITH KEYS SIZE DIFFERENT FROM DATA SIZE
-    EXPECT_THROW(df4.set_keys({}), std::invalid_argument);
     EXPECT_THROW(df4.set_keys({"a", "b", "c", "d"}), std::invalid_argument);
 
     // DF WITH KEYS NOT UNIQUE
@@ -450,8 +450,7 @@ TEST(TestStatic, read_csv)
 
     // DF WITH KEYS
     cdata_frame<std::string> df2 = cdata_frame<std::string>::read_csv("test/input/header.csv");
-    std::vector<std::string> header = {"Nom", "Prénom", "Âge", "Ville", "Salaire"};
-    EXPECT_EQ(df2.keys(), header);
+    EXPECT_TRUE(df2.keys().empty());
     EXPECT_TRUE(df2.data().is_empty());
 
     // DF WITH DATA
@@ -469,6 +468,7 @@ TEST(TestStatic, read_csv)
 
     // DF WITH KEYS AND DATA
     cdata_frame<std::string> df4 = cdata_frame<std::string>::read_csv("test/input/valid_with_header.csv");
+    std::vector<std::string> header({"Nom", "Prénom", "Âge", "Ville", "Salaire"});
     EXPECT_EQ(df4.keys(), header);
     EXPECT_EQ(df4.data(), data);
 

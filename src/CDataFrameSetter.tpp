@@ -13,7 +13,7 @@ template <class T>
 void cdata_frame<T>::set_keys(const std::vector<std::string> &keys)
 {
     // Check if the number of keys is different from the number of columns
-    if (not cmatrix<T>::is_empty() && keys.size() != cmatrix<T>::dim_h())
+    if (not keys.empty() && keys.size() != cmatrix<T>::dim_h())
         throw std::invalid_argument("The number of keys must be equal to the number of columns. Actual: " +
                                     std::to_string(keys.size()) +
                                     ", Expected: " +

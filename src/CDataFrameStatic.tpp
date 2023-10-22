@@ -68,7 +68,7 @@ cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep
     std::fstream file = cdata_frame<T>::__open_file(path);
 
     cdata_frame<T> df;
-    bool first_line = true;
+    std::vector<std::string> first_line_tokenized;
 
     // Parse the file line by line
     for (std::string line; getline(file, line);)
@@ -77,18 +77,20 @@ cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep
         const std::vector<std::string> &line_tokenized = cdata_frame<T>::__parse_csv_line(line, sep);
 
         // Check if the header is enabled
-        if (first_line and header)
-            df.set_keys(line_tokenized);
+        if (first_line_tokenized.empty() and header)
+            first_line_tokenized = line_tokenized;
 
         // Push the line in the data frame
         else
             df.push_row_back(std::vector<T>(line_tokenized.begin(), line_tokenized.end()));
-
-        first_line = false;
     }
 
     // Close the file
     file.close();
+
+    // Set the keys
+    if (not df.is_empty())
+        df.set_keys(first_line_tokenized);
 
     return df;
 }
