@@ -81,7 +81,7 @@ void cdata_frame<T>::__remove_key(const size_t &pos)
 {
     if (not m_keys.empty())
         m_keys.erase(m_keys.begin() + pos);
-    
+
     else if (cmatrix<T>::is_empty())
         m_keys.clear();
 }
