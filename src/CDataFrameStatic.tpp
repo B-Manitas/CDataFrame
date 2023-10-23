@@ -72,7 +72,7 @@ std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &lin
 }
 
 template <class T>
-cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const char &sep, const bool &header, const bool &index)
+cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const bool &header, const bool &index, const char &sep)
 {
     // Check if the file has expected extension (csv)
     if (not __has_expected_extension(path, "csv"))

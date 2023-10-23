@@ -551,14 +551,14 @@ TEST(TestStatic, read_csv)
     EXPECT_TRUE(df2.data().is_empty());
 
     // DF WITH DATA
-    cdata_frame<std::string> df3 = cdata_frame<std::string>::read_csv("test/input/valid.csv", ',', false);
+    cdata_frame<std::string> df3 = cdata_frame<std::string>::read_csv("test/input/valid.csv", false);
     cmatrix<std::string> data({{"Doe", "John", "30", "New York", "50000"},
                                {"Smith", "Jane", "25", "Los Angeles", "60000"},
                                {"Johnson", "Michael", "35", "Chicago", "75000"}});
     EXPECT_TRUE(df3.keys().empty());
     EXPECT_EQ(df3.data(), data);
 
-    cdata_frame<std::string> df3_2 = cdata_frame<std::string>::read_csv("test/input/valid_2.csv", ',', false);
+    cdata_frame<std::string> df3_2 = cdata_frame<std::string>::read_csv("test/input/valid_2.csv", false);
     cmatrix<std::string> data2({{"Lorem ipsum dolor sit ame"}});
     EXPECT_TRUE(df3_2.keys().empty());
     EXPECT_EQ(df3_2.data(), data2);
@@ -570,7 +570,7 @@ TEST(TestStatic, read_csv)
     EXPECT_EQ(df4.data(), data);
 
     // DF WITH INDEX AND DATA
-    cdata_frame<std::string> df5 = cdata_frame<std::string>::read_csv("test/input/valid_with_index.csv", ',', false, true);
+    cdata_frame<std::string> df5 = cdata_frame<std::string>::read_csv("test/input/valid_with_index.csv", false, true);
     cmatrix<std::string> data_2({{"42", "54", "36"},
                                  {"23", "65", "78"},
                                  {"12", "98", "45"},
@@ -581,7 +581,7 @@ TEST(TestStatic, read_csv)
     EXPECT_EQ(df5.data(), data_2);
 
     // DF WITH KEYS, INDEX AND DATA
-    cdata_frame<std::string> df6 = cdata_frame<std::string>::read_csv("test/input/valid_header_index.csv", ',', true, true);
+    cdata_frame<std::string> df6 = cdata_frame<std::string>::read_csv("test/input/valid_header_index.csv", true, true);
     std::vector<std::string> header_2({"Nom", "Prénom", "Âge"});
     std::vector<std::string> index_2({"1", "2", "3", "4"});
     EXPECT_EQ(df6.keys(), header_2);
@@ -604,13 +604,13 @@ TEST(TestStatic, read_csv)
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_2.csv"), std::invalid_argument);
 
     // INVALID INDEX
-    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index.csv", ',', false, true), std::invalid_argument);
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index.csv", false, true), std::invalid_argument);
 
     // INDEX NOT UNIQUE
-    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index_2.csv", ',', false, true), std::invalid_argument);
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index_2.csv", false, true), std::invalid_argument);
 
     // INVALID KEYS, INDEX AND DATA
-    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_and_index.csv", ',', false, true), std::invalid_argument);
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_and_index.csv", false, true), std::invalid_argument);
 }
 
 int main(int argc, char **argv)

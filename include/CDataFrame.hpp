@@ -425,16 +425,16 @@ public:
      * @brief Read a csv file.
      *
      * @param path The path of the csv file.
-     * @param sep The separator of the csv file. Default is ','.
      * @param header If the csv file has a header. Default is true.
      * @param index If the csv file has an index. Default is false.
+     * @param sep The separator of the csv file. Default is ','.
      * @return cdata_frame<std::string> The data frame read.
      *
      * @note If the header is enabled, the first line of the csv file will be used as keys.
      * @note If the data frame is empty, keys and index are empty.
      * @ingroup general
      */
-    static cdata_frame<std::string> read_csv(const std::string &path, const char &sep = ',', const bool &header = true, const bool &index = false);
+    static cdata_frame<std::string> read_csv(const std::string &path, const bool &header = true, const bool &index = false, const char &sep = ',');
 };
 
 #include "../src/CDataFrameCheck.tpp"
