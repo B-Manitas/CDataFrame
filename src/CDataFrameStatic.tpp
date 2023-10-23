@@ -42,7 +42,7 @@ std::fstream cdata_frame<T>::__open_file(const std::string &path)
 // PARSE
 
 template <class T>
-std::vector<std::string> cdata_frame<T>::__parse_csv_line(std::string line, const char sep)
+std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &line, const char &sep)
 {
     // Convert the line to string stream
     std::istringstream line_stream(line);

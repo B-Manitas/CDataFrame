@@ -154,7 +154,7 @@ private:
      *
      * @ingroup static
      */
-    static std::vector<std::string> __parse_csv_line(std::string line, const char sep);
+    static std::vector<std::string> __parse_csv_line(const std::string &line, const char &sep);
 
 public:
     // CONSTRUCTOR
