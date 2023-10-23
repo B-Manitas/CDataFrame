@@ -569,6 +569,25 @@ TEST(TestStatic, read_csv)
     EXPECT_EQ(df4.keys(), header);
     EXPECT_EQ(df4.data(), data);
 
+    // DF WITH INDEX AND DATA
+    cdata_frame<std::string> df5 = cdata_frame<std::string>::read_csv("test/input/valid_with_index.csv", ',', false, true);
+    cmatrix<std::string> data_2({{"42", "54", "36"},
+                                 {"23", "65", "78"},
+                                 {"12", "98", "45"},
+                                 {"87", "23", "67"}});
+    std::vector<std::string> index({"1", "2", "3", "4"});
+    EXPECT_TRUE(df5.keys().empty());
+    EXPECT_EQ(df5.index(), index);
+    EXPECT_EQ(df5.data(), data_2);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<std::string> df6 = cdata_frame<std::string>::read_csv("test/input/valid_header_index.csv", ',', true, true);
+    std::vector<std::string> header_2({"Nom", "Prénom", "Âge"});
+    std::vector<std::string> index_2({"1", "2", "3", "4"});
+    EXPECT_EQ(df6.keys(), header_2);
+    EXPECT_EQ(df6.index(), index_2);
+    EXPECT_EQ(df6.data(), data_2);
+
     // INVALID PATH
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/no_path.csv"), std::invalid_argument);
 
@@ -583,6 +602,15 @@ TEST(TestStatic, read_csv)
 
     // KEYS NOT UNIQUE
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_2.csv"), std::invalid_argument);
+
+    // INVALID INDEX
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index.csv", ',', false, true), std::invalid_argument);
+
+    // INDEX NOT UNIQUE
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_index_2.csv", ',', false, true), std::invalid_argument);
+
+    // INVALID KEYS, INDEX AND DATA
+    EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_and_index.csv", ',', false, true), std::invalid_argument);
 }
 
 int main(int argc, char **argv)

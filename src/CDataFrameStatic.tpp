@@ -42,7 +42,7 @@ std::fstream cdata_frame<T>::__open_file(const std::string &path)
 // PARSE
 
 template <class T>
-std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &line, const char &sep)
+std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &line, const char &sep, const bool &index, std::string *index_name)
 {
     // Convert the line to string stream
     std::istringstream line_stream(line);
@@ -54,11 +54,25 @@ std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &lin
     for (std::string word; getline(line_stream, word, sep);)
         line_tokenized.push_back(word);
 
+    // Check if the index is enabled
+    if (index)
+    {
+        // Check if the index name is set
+        if (index_name == nullptr)
+            throw std::invalid_argument("The index name must be set.");
+
+        // Set the index name
+        *index_name = line_tokenized[0];
+
+        // Remove the index from the line
+        line_tokenized.erase(line_tokenized.begin());
+    }
+
     return line_tokenized;
 }
 
 template <class T>
-cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const char &sep, const bool &header)
+cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const char &sep, const bool &header, const bool &index)
 {
     // Check if the file has expected extension (csv)
     if (not __has_expected_extension(path, "csv"))
@@ -68,29 +82,45 @@ cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const
     std::fstream file = cdata_frame<T>::__open_file(path);
 
     cdata_frame<std::string> df;
-    std::vector<std::string> first_line_tokenized;
+    std::vector<std::string> vec_keys;
+    std::vector<std::string> vec_index;
 
     // Parse the file line by line
     for (std::string line; getline(file, line);)
     {
+        // Create a string used to store the current index
+        std::string current_index = "";
+
         // Parse and tokenize the line
-        const std::vector<std::string> &line_tokenized = cdata_frame<T>::__parse_csv_line(line, sep);
+        const std::vector<std::string> &line_tokenized = cdata_frame<T>::__parse_csv_line(line, sep, index, &current_index);
 
         // Check if the header is enabled
-        if (first_line_tokenized.empty() and header)
-            first_line_tokenized = line_tokenized;
+        if (vec_keys.empty() and header)
+            vec_keys = line_tokenized;
 
-        // Push the line in the data frame
         else
+        {
+            // Push the line in the data frame
             df.push_row_back(line_tokenized);
+
+            // Push the index in the vector if the index is enabled
+            if (index)
+                vec_index.push_back(current_index);
+        }
     }
 
     // Close the file
     file.close();
 
-    // Set the keys
+    // If the data frame is empty, index and keys can't be set
     if (not df.is_empty())
-        df.set_keys(first_line_tokenized);
+    {
+        // Set the keys
+        df.set_keys(vec_keys);
+
+        // Set the index
+        df.set_index(vec_index);
+    }
 
     return df;
 }
