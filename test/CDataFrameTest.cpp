@@ -180,6 +180,16 @@ TEST(TestGetter, columns)
     EXPECT_EQ(df4.columns({"b", "c", "b"}), cmatrix<int>({{2, 3, 2}, {5, 6, 5}}));
     EXPECT_THROW(df4.columns("d"), std::invalid_argument);
     EXPECT_THROW(df4.columns({"a", "e"}), std::invalid_argument);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    EXPECT_THROW(df5.columns("c"), std::invalid_argument);
+    EXPECT_THROW(df5.columns({"a", "c"}), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_EQ(df6.columns("a"), cmatrix<int>({{1}, {4}}));
+    EXPECT_EQ(df6.columns({"b", "a", "b"}), cmatrix<int>({{2, 1, 2}, {5, 4, 5}}));
 }
 
 // ==================================================
