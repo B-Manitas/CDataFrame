@@ -58,7 +58,7 @@ std::vector<std::string> cdata_frame<T>::__parse_csv_line(const std::string &lin
 }
 
 template <class T>
-cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep, const bool &header)
+cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const char &sep, const bool &header)
 {
     // Check if the file has expected extension (csv)
     if (not __has_expected_extension(path, "csv"))
@@ -67,7 +67,7 @@ cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep
     // Open the file
     std::fstream file = cdata_frame<T>::__open_file(path);
 
-    cdata_frame<T> df;
+    cdata_frame<std::string> df;
     std::vector<std::string> first_line_tokenized;
 
     // Parse the file line by line
@@ -82,7 +82,7 @@ cdata_frame<T> cdata_frame<T>::read_csv(const std::string &path, const char &sep
 
         // Push the line in the data frame
         else
-            df.push_row_back(std::vector<T>(line_tokenized.begin(), line_tokenized.end()));
+            df.push_row_back(line_tokenized);
     }
 
     // Close the file
