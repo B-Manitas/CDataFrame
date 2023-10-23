@@ -9,12 +9,12 @@
 
 #pragma once
 
+#include <fstream>
 #include <initializer_list>
 #include <set>
+#include <sstream>
 #include <string>
 #include <tuple>
-#include <initializer_list>
-#include <fstream>
 #include <vector>
 
 #include "../lib/CMatrix/include/CMatrix.hpp"
