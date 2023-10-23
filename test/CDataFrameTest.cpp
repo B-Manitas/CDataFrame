@@ -431,6 +431,20 @@ TEST(TestManipulation, remove_row)
     EXPECT_EQ(df4.data(), (cmatrix<int>{{4, 5, 6}}));
     df4.remove_row(0);
     EXPECT_TRUE(df4.data().is_empty());
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    df5.remove_row(0);
+    EXPECT_EQ(df5.data(), (cmatrix<int>{{4, 5, 6}}));
+    df5.remove_row("b");
+    EXPECT_TRUE(df5.data().is_empty());
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    df6.remove_row(0);
+    EXPECT_EQ(df6.data(), (cmatrix<int>{{4, 5, 6}}));
+    df6.remove_row("b");
+    EXPECT_TRUE(df6.data().is_empty());
 }
 
 /** @brief Test the 'remove_column' method of the 'DataFrame' class. */
@@ -454,10 +468,28 @@ TEST(TestManipulation, remove_column)
     cdata_frame<int> df4({"a", "b", "c"}, data);
     df4.remove_column(0);
     EXPECT_EQ(df4.data(), (cmatrix<int>{{2, 3}, {5, 6}}));
-    df4.remove_column(1);
+    df4.remove_column("c");
     EXPECT_EQ(df4.data(), (cmatrix<int>{{2}, {5}}));
     df4.remove_column(0);
     EXPECT_TRUE(df4.data().is_empty());
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    df5.remove_column(0);
+    EXPECT_EQ(df5.data(), (cmatrix<int>{{2, 3}, {5, 6}}));
+    df5.remove_column(1);
+    EXPECT_EQ(df5.data(), (cmatrix<int>{{2}, {5}}));
+    df5.remove_column(0);
+    EXPECT_TRUE(df5.data().is_empty());
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    df6.remove_column(0);
+    EXPECT_EQ(df6.data(), (cmatrix<int>{{2, 3}, {5, 6}}));
+    df6.remove_column("c");
+    EXPECT_EQ(df6.data(), (cmatrix<int>{{2}, {5}}));
+    df6.remove_column(0);
+    EXPECT_TRUE(df6.data().is_empty());
 }
 
 // ==================================================

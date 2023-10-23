@@ -41,7 +41,17 @@ private:
      *
      * @ingroup getter
      */
-    size_t __id_of_key(const std::string &key) const;
+    size_t __get_key_pos(const std::string &key) const;
+    /**
+     * @brief Get the position id of the index.
+     *
+     * @param index The index to get the index.
+     * @return size_t The position id of the index.
+     * @throw std::invalid_argument If the index doesn't exist.
+     *
+     * @ingroup getter
+     */
+    size_t __get_index_pos(const std::string &index) const;
 
     // MANIPULATION
     /**
@@ -52,6 +62,15 @@ private:
      * @ingroup manipulation
      */
     void __remove_key(const size_t &pos);
+    /**
+     * @brief Remove a key at the given key.
+     *
+     * @param key The key of the key.
+     * @throw std::invalid_argument If the key doesn't exist.
+     *
+     * @ingroup manipulation
+     */
+    void __remove_index(const size_t &pos);
 
     // General
     /**
@@ -346,6 +365,15 @@ public:
      */
     void remove_row(const size_t &pos);
     /**
+     * @brief Remove a row at the given index.
+     *
+     * @param index The index of the row.
+     * @throw std::invalid_argument If the index doesn't exist.
+     *
+     * @ingroup manipulation
+     */
+    void remove_row(const std::string &index);
+    /**
      * @brief Remove a column at the given position.
      *
      * @param pos The position of the column.
@@ -353,6 +381,15 @@ public:
      * @ingroup manipulation
      */
     void remove_column(const size_t &pos);
+    /**
+     * @brief Remove a column at the given key.
+     *
+     * @param key The key of the column.
+     * @throw std::invalid_argument If the key doesn't exist.
+     *
+     * @ingroup manipulation
+     */
+    void remove_column(const std::string &key);
 
     // STATIC
     /**

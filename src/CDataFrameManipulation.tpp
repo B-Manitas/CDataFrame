@@ -110,10 +110,34 @@ void cdata_frame<T>::__remove_key(const size_t &pos)
 }
 
 template <class T>
+void cdata_frame<T>::__remove_index(const size_t &pos)
+{
+    if (not m_index.empty())
+        m_index.erase(m_index.begin() + pos);
+
+    else if (cmatrix<T>::is_empty())
+        m_index.clear();
+}
+
+template <class T>
+void cdata_frame<T>::remove_row(const std::string &index)
+{
+    const size_t pos = __get_index_pos(index);
+    remove_row(pos);
+}
+
+template <class T>
 void cdata_frame<T>::remove_row(const size_t &pos)
 {
     cmatrix<T>::remove_row(pos);
-    __remove_key(pos);
+    __remove_index(pos);
+}
+
+template <class T>
+void cdata_frame<T>::remove_column(const std::string &key)
+{
+    const size_t pos = __get_key_pos(key);
+    remove_column(pos);
 }
 
 template <class T>

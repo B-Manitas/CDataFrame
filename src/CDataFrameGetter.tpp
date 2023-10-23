@@ -33,7 +33,7 @@ cmatrix<T> cdata_frame<T>::data() const
 template <class T>
 cmatrix<T> cdata_frame<T>::columns(const std::string &key) const
 {
-    return cmatrix<T>::columns(__id_of_key(key));
+    return cmatrix<T>::columns(__get_key_pos(key));
 }
 
 template <class T>
@@ -50,7 +50,7 @@ cmatrix<T> cdata_frame<T>::columns(const std::vector<std::string> &keys) const
 
     // For each key, get the corresponding position id
     for (const auto &key : keys)
-        columns.push_back(__id_of_key(key));
+        columns.push_back(__get_key_pos(key));
 
     return cmatrix<T>::columns(columns);
 }
@@ -59,7 +59,7 @@ cmatrix<T> cdata_frame<T>::columns(const std::vector<std::string> &keys) const
 // PRIVATE
 
 template <class T>
-size_t cdata_frame<T>::__id_of_key(const std::string &key) const
+size_t cdata_frame<T>::__get_key_pos(const std::string &key) const
 {
     // Find the id of the key
     auto it = std::find(m_keys.begin(), m_keys.end(), key);
@@ -70,4 +70,18 @@ size_t cdata_frame<T>::__id_of_key(const std::string &key) const
 
     // Return the id of the key
     return it - m_keys.begin();
+}
+
+template <class T>
+size_t cdata_frame<T>::__get_index_pos(const std::string &index) const
+{
+    // Find the id of the index
+    auto it = std::find(m_index.begin(), m_index.end(), index);
+
+    // If the index does not exist, throw an exception
+    if (it == m_index.end())
+        throw std::invalid_argument("The index '" + index + "' does not exist.");
+
+    // Return the id of the index
+    return it - m_index.begin();
 }
