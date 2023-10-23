@@ -588,6 +588,10 @@ TEST(TestStatic, read_csv)
     EXPECT_EQ(df6.index(), index_2);
     EXPECT_EQ(df6.data(), data_2);
 
+    // DELIMITER
+    cdata_frame<std::string> df7 = cdata_frame<std::string>::read_csv("test/input/valid_delimiter.csv", false, false, ';');
+    EXPECT_EQ(df7.data(), data);
+
     // INVALID PATH
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/no_path.csv"), std::invalid_argument);
 

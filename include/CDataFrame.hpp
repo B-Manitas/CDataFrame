@@ -244,19 +244,19 @@ public:
     cmatrix<T> rows(const std::string &index) const;
     /**
      * @brief Get the column corresponding to the given index.
-     * 
+     *
      * @param index The index of the column to get.
      * @return std::matrix<T> The column corresponding to the given index.
-     * 
+     *
      * @ingroup getter
      */
     cmatrix<T> rows(const std::initializer_list<std::string> &index) const;
     /**
      * @brief Get the column corresponding to the given index.
-     * 
+     *
      * @param index The index of the column to get.
      * @return std::matrix<T> The column corresponding to the given index.
-     * 
+     *
      * @ingroup getter
      */
     cmatrix<T> rows(const std::vector<std::string> &index) const;
