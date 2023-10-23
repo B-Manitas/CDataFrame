@@ -130,6 +130,38 @@ TEST(TestGetter, data)
     EXPECT_EQ(df4.data(), data);
 }
 
+/** @brief Test the 'rows' method of the 'DataFrame' class. */
+TEST(TestGetter, rows)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.rows("a"), std::invalid_argument);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    EXPECT_THROW(df3.rows("a"), std::invalid_argument);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_THROW(df4.rows("d"), std::invalid_argument);
+    EXPECT_THROW(df4.rows({"a", "e"}), std::invalid_argument);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b"});
+    EXPECT_EQ(df5.rows("a"), cmatrix<int>({{1, 2, 3}}));
+    EXPECT_EQ(df5.rows({"b", "a", "b"}), cmatrix<int>({{4, 5, 6}, {1, 2, 3}, {4, 5, 6}}));
+    EXPECT_THROW(df5.rows("c"), std::invalid_argument);
+    EXPECT_THROW(df5.rows({"a", "c"}), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_EQ(df6.rows("a"), cmatrix<int>({{1, 2, 3}}));
+    EXPECT_EQ(df6.rows({"b", "a", "b"}), cmatrix<int>({{4, 5, 6}, {1, 2, 3}, {4, 5, 6}}));
+    EXPECT_THROW(df6.rows("c"), std::invalid_argument);
+    EXPECT_THROW(df6.rows({"a", "c"}), std::invalid_argument);
+}
+
 /** @brief Test the 'row' method of the 'DataFrame' class. */
 TEST(TestGetter, columns)
 {

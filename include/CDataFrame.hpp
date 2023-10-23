@@ -232,6 +232,33 @@ public:
      */
     cmatrix<T> data() const;
     /**
+     * @brief Get the row corresponding to the given index.
+     *
+     * @param index The index of the row to get.
+     * @return std::matrix<T> The row corresponding to the given index.
+     *
+     * @ingroup getter
+     */
+    cmatrix<T> rows(const std::string &index) const;
+    /**
+     * @brief Get the column corresponding to the given index.
+     * 
+     * @param index The index of the column to get.
+     * @return std::matrix<T> The column corresponding to the given index.
+     * 
+     * @ingroup getter
+     */
+    cmatrix<T> rows(const std::initializer_list<std::string> &index) const;
+    /**
+     * @brief Get the column corresponding to the given index.
+     * 
+     * @param index The index of the column to get.
+     * @return std::matrix<T> The column corresponding to the given index.
+     * 
+     * @ingroup getter
+     */
+    cmatrix<T> rows(const std::vector<std::string> &index) const;
+    /**
      * @brief Get the columns corresponding to the given keys.
      *
      * @param keys The keys of the columns to get.

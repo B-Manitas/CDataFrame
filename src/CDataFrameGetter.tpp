@@ -31,6 +31,31 @@ cmatrix<T> cdata_frame<T>::data() const
 // ACCESSOR
 
 template <class T>
+cmatrix<T> cdata_frame<T>::rows(const std::string &index) const
+{
+    return cmatrix<T>::rows(__get_index_pos(index));
+}
+
+template <class T>
+cmatrix<T> cdata_frame<T>::rows(const std::initializer_list<std::string> &index) const
+{
+    return rows(std::vector<std::string>(index));
+}
+
+template <class T>
+cmatrix<T> cdata_frame<T>::rows(const std::vector<std::string> &index) const
+{
+    // Store the ids of the index
+    std::vector<size_t> rows;
+
+    // For each index, get the corresponding position id
+    for (const auto &idx : index)
+        rows.push_back(__get_index_pos(idx));
+
+    return cmatrix<T>::rows(rows);
+}
+
+template <class T>
 cmatrix<T> cdata_frame<T>::columns(const std::string &key) const
 {
     return cmatrix<T>::columns(__get_key_pos(key));
