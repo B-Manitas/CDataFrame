@@ -28,3 +28,172 @@ std::vector<std::string> cdata_frame<T>::__generate_uids(const std::string &not_
 
     return uid_keys;
 }
+
+// ==================================================
+// PRINT
+
+template <class T>
+short unsigned int cdata_frame<T>::__stream_width(const std::vector<T> data, const int &initial) const
+{
+    // The maximum size initialised with the initial value in case of having headers
+    short unsigned int max_length = initial;
+
+    // Iterate over the rows to get the maximum size of each column
+    for (size_t i = 0; i < data.size(); i++)
+    {
+        // Get the size of the data
+        const short unsigned int data_length = std::stringstream(data[i]).str().size();
+
+        // Get the maximum size
+        max_length = std::max(max_length, data_length);
+    }
+
+    // Add 2 for the space between the data and the border
+    max_length += 2;
+
+    return max_length;
+}
+
+template <class T>
+std::vector<short unsigned int> cdata_frame<T>::__stream_widths_vec() const
+{
+    // The size of the vector is the number of columns + 1 (for the index at the position 0)
+    const size_t size = cmatrix<T>::dim_h() + 1;
+    std::vector<short unsigned int> widths(size, 0);
+
+    // Add the width of the index
+    if (has_index())
+        widths[0] = __stream_width(m_index);
+
+    // Iterate over the columns to get the maximum size of each column
+    for (size_t c = 1; c < size; c++)
+    {
+        // If hasn't keys, the key size is 0
+        const size_t key_size = has_keys() ? m_keys[c - 1].size() : 0;
+
+        // Assign the maximum size of the column
+        widths[c] = __stream_width(cmatrix<T>::columns_vec(c - 1), key_size);
+    }
+
+    return widths;
+}
+
+template <class T>
+void cdata_frame<T>::__print_border(const std::vector<short unsigned int> &widths, const std::string &start, const std::string &middle, const std::string &end) const
+{
+    // Print the start of the border (┌, ├ or └)
+    std::cout << start;
+
+    // Iterate over the widths to print the middle of the border (┬, ┼ or ┴)
+    for (size_t i = 0; i < widths.size(); i++)
+    {
+        // If the width is 0, don't print the middle (useful when doesn't have index)
+        if (widths[i] == 0)
+            continue;
+
+        // Print the middle
+        for (size_t j = 0; j < widths[i]; j++)
+            std::cout << "─";
+
+        // Print the middle of the border (┬, ┼ or ┴)
+        if (i != widths.size() - 1)
+            std::cout << middle;
+    }
+
+    // Print the end of the border (┐, ┤ or ┘)
+    std::cout << end << std::endl;
+}
+
+template <class T>
+void cdata_frame<T>::__print_border_top(const std::vector<short unsigned int> &widths) const
+{
+    __print_border(widths, "┌", "┬", "┐");
+}
+
+template <class T>
+void cdata_frame<T>::__print_border_middle(const std::vector<short unsigned int> &widths) const
+{
+    __print_border(widths, "├", "┼", "┤");
+}
+
+template <class T>
+void cdata_frame<T>::__print_border_bottom(const std::vector<short unsigned int> &widths) const
+{
+    __print_border(widths, "└", "┴", "┘");
+}
+
+template <class T>
+void cdata_frame<T>::__print_row(const std::vector<short unsigned int> &widths, const std::vector<std::string> &data, const std::string &index) const
+{
+    // Handle the print of the first column, depending on if has index, keys or not
+    // When the row is the header, the index is empty (display: '| |')
+    if (has_index() and index == "")
+    {
+        std::string space = std::string(widths[0] - 2, ' ');
+        std::cout << "│ " << space << " │ ";
+    }
+
+    // If not the header, print the index (display: '| index |')
+    else if (has_index())
+    {
+        std::string space = std::string(widths[0] - 2 - index.size(), ' ');
+        std::cout << "│ " << index << space << " │ ";
+    }
+
+    // If hasn't index, print the '| ' for the right border of the column (display: '| ')
+    else
+        std::cout << "│ ";
+
+    // Handle the print of the rest of the columns
+    for (size_t i = 0; i < data.size(); i++)
+    {
+        // width[i + 1] because the first column is the index
+        std::string space = std::string(widths[i + 1] - data[i].size() - 2, ' ');
+
+        // Print the element of the row
+        std::cout << data[i] << space;
+
+        // Print the '|' except for the last column
+        if (i < data.size())
+            std::cout << " │ ";
+    }
+
+    std::cout << std::endl;
+}
+
+template <class T>
+void cdata_frame<T>::print() const
+{
+    // Compute the widths for each column
+    std::vector<short unsigned int> columns_widths = __stream_widths_vec();
+
+    // Print the top border
+    __print_border_top(columns_widths);
+
+    // Print header
+    if (has_keys())
+    {
+        // Index is empty because the header doesn't have index
+        __print_row(columns_widths, m_keys, "");
+
+        __print_border_bottom(columns_widths);
+        __print_border_top(columns_widths);
+    }
+
+    // Print data
+    for (size_t i = 0; i < cmatrix<T>::dim_v(); i++)
+    {
+        // If has index, get the index of the row
+        const std::string index = has_index() ? m_index[i] : "";
+
+        // Print the row
+        __print_row(columns_widths, cmatrix<T>::rows_vec(i), index);
+
+        // Print the middle line except for the last row
+        if (i != cmatrix<T>::dim_v() - 1)
+            __print_border_middle(columns_widths);
+    }
+
+    // Print the bottom border
+    __print_border_bottom(columns_widths);
+}

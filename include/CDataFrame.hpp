@@ -83,6 +83,69 @@ private:
      * @ingroup general
      */
     std::vector<std::string> __generate_uids(const std::string &not_in) const;
+    /**
+     * @brief Compute the maximum length of the stream for a vector of data.
+     *
+     * @param data The data to compute the maximum length of the stream.
+     * @param initial The initial value of the maximum length. Default is 0.
+     * @return short unsigned int The maximum length of the stream of the data.
+     *
+     * @ingroup general
+     */
+    short unsigned int __stream_width(const std::vector<T> data, const int &initial = 0) const;
+    /**
+     * @brief Compute the maximum length of the stream of the data.
+     *
+     * @return std::vector<short unsigned int> The maximum length of the stream of the data.
+     *
+     * @ingroup general
+     */
+    std::vector<short unsigned int> __stream_widths_vec() const;
+    /**
+     * @brief Print the border of the data frame.
+     *
+     * @param widths The widths of the data frame.
+     * @param left The left border of the data frame.
+     * @param middle The middle border of the data frame.
+     * @param right The right border of the data frame.
+     *
+     * @ingroup general
+     */
+    void __print_border(const std::vector<short unsigned int> &widths, const std::string &left, const std::string &middle, const std::string &right) const;
+    /**
+     * @brief Print the top border of the data frame.
+     *
+     * @param widths The widths of the data frame.
+     *
+     * @ingroup general
+     */
+    void __print_border_top(const std::vector<short unsigned int> &widths) const;
+    /**
+     * @brief Print the middle border of the data frame.
+     *
+     * @param widths The widths of the data frame.
+     *
+     * @ingroup general
+     */
+    void __print_border_middle(const std::vector<short unsigned int> &widths) const;
+    /**
+     * @brief Print the bottom border of the data frame.
+     *
+     * @param widths The widths of the data frame.
+     *
+     * @ingroup general
+     */
+    void __print_border_bottom(const std::vector<short unsigned int> &widths) const;
+    /**
+     * @brief Print a row of the data frame.
+     *
+     * @param widths The widths stream for each element of the row.
+     * @param data The data of the row.
+     * @param index The index of the row.
+     *
+     * @ingroup general
+     */
+    void __print_row(const std::vector<short unsigned int> &widths, const std::vector<std::string> &data, const std::string &index = "") const;
 
     // CHECK
     /**
@@ -420,6 +483,10 @@ public:
      */
     void remove_column(const std::string &key);
 
+    // CHECK
+    bool has_keys() const;
+    bool has_index() const;
+
     // STATIC
     /**
      * @brief Read a csv file.
@@ -435,6 +502,9 @@ public:
      * @ingroup general
      */
     static cdata_frame<std::string> read_csv(const std::string &path, const bool &header = true, const bool &index = false, const char &sep = ',');
+
+    // GENERAL
+    void print() const;
 };
 
 #include "../src/CDataFrameCheck.tpp"

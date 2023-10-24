@@ -37,3 +37,15 @@ void cdata_frame<T>::__check_valid_row(const std::vector<T> &val) const
                                     std::to_string(m_keys.size()) +
                                     ".");
 }
+
+template <class T>
+bool cdata_frame<T>::has_keys() const
+{
+    return not m_keys.empty();
+}
+
+template <class T>
+bool cdata_frame<T>::has_index() const
+{
+    return not m_index.empty();
+}
