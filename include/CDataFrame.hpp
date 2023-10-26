@@ -576,6 +576,11 @@ public:
     static cdata_frame<T> merge(const cdata_frame<T> &df1, const cdata_frame<T> &df2, const unsigned int &axis = 0);
 
     // GENERAL
+    /**
+     * @brief Print the data frame.
+     *
+     * @ingroup general
+     */
     void print() const;
     /**
      * @brief Copy the data frame.
