@@ -193,6 +193,16 @@ private:
      * @ingroup check
      */
     void __check_valid_row(const std::vector<T> &val) const;
+    /**
+     * @brief Check if a vector of data is unique.
+     *
+     * @param vec The vector of data to check.
+     * @param label The label of the vector of data for the error message.
+     * @throw std::runtime_error If the vector of data is not unique.
+     *
+     * @ingroup check
+     */
+    void __check_unique(const std::vector<std::string> &vec, const std::string &label) const;
 
     // STATIC
     /**

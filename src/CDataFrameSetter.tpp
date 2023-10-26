@@ -21,8 +21,7 @@ void cdata_frame<T>::set_keys(const std::vector<std::string> &keys)
                                     ".");
 
     // Check if the keys are unique
-    if (std::set<std::string>(keys.begin(), keys.end()).size() != keys.size())
-        throw std::invalid_argument("The keys must be unique.");
+    __check_unique(keys, "keys");
 
     m_keys = keys;
 }
@@ -39,8 +38,7 @@ void cdata_frame<T>::set_index(const std::vector<std::string> &index)
                                     ".");
 
     // Check if the index are unique
-    if (std::set<std::string>(index.begin(), index.end()).size() != index.size())
-        throw std::invalid_argument("The index must be unique.");
+    __check_unique(index, "index");
 
     m_index = index;
 }

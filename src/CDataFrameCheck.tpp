@@ -8,7 +8,7 @@
  */
 
 // ==================================================
-// CHECK
+// THROW
 
 template <class T>
 void cdata_frame<T>::__check_unique_keys(const std::string &key) const
@@ -37,6 +37,17 @@ void cdata_frame<T>::__check_valid_row(const std::vector<T> &val) const
                                     std::to_string(m_keys.size()) +
                                     ".");
 }
+
+template <class T>
+void cdata_frame<T>::__check_unique(const std::vector<std::string> &vec, const std::string &label) const
+{
+    // Check if the data are unique
+    if (std::set<std::string>(vec.begin(), vec.end()).size() != vec.size())
+        throw std::invalid_argument("The " + label + " must be unique.");
+}
+
+// ==================================================
+// CHECK
 
 template <class T>
 bool cdata_frame<T>::has_keys() const
