@@ -10,13 +10,13 @@
 // GENERAL
 
 template <class T>
-std::vector<std::string> cdata_frame<T>::__generate_uids(const std::string &not_in) const
+std::vector<std::string> cdata_frame<T>::__generate_uids(const size_t len, const std::string &not_in) const
 {
     // Create string vector with the size of the number of columns
-    std::vector<std::string> uid_keys(cmatrix<T>::dim_h(), "");
+    std::vector<std::string> uid_keys(len, "");
 
     // Fill the vector with the prefix and the uid
-    for (size_t i = 0; i < cmatrix<T>::dim_h(); i++)
+    for (size_t i = 0; i < len; i++)
     {
         std::string uid = std::to_string(i);
 

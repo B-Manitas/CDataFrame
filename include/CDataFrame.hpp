@@ -76,13 +76,13 @@ private:
     /**
      * @brief Generate unique index.
      *
+     * @param len The length of the vector to generate.
      * @param not_in The index to not generate.
-     * @param prefix The prefix of the keys. Default is 'key_'.
      * @return std::vector<std::string> The unique keys.
      *
      * @ingroup general
      */
-    std::vector<std::string> __generate_uids(const std::string &not_in) const;
+    std::vector<std::string> __generate_uids(const size_t len, const std::string &not_in = "") const;
     /**
      * @brief Compute the maximum length of the stream for a vector of data.
      *

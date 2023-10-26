@@ -21,7 +21,7 @@ void cdata_frame<T>::insert_row(const size_t &pos, const std::vector<T> &val, co
             __check_unique_index(index);
 
             // Generate unique index and insert the new index
-            m_index = __generate_uids(index);
+            m_index = __generate_uids(cmatrix<T>::dim_v(), index);
             m_index.insert(m_index.begin() + pos, index);
         }
     }
@@ -51,7 +51,7 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
             __check_unique_keys(key);
 
             // Generate unique keys and insert the new key
-            m_keys = __generate_uids(key);
+            m_keys = __generate_uids(cmatrix<T>::dim_h(), key);
             m_keys.insert(m_keys.begin() + pos, key);
         }
     }
