@@ -534,6 +534,106 @@ TEST(TestManipulation, remove_column)
     EXPECT_TRUE(df6.data().is_empty());
 }
 
+/** @brief Test the 'concatenate' method of the 'DataFrame' class. */
+TEST(TestManipulation, concatenate)
+{
+    // DF EMPTY
+    // CONCATENATE ROWS
+    cdata_frame<int> df;
+    cdata_frame<int> df2;
+    df.concatenate(df2, 0);
+    EXPECT_TRUE(df.data().is_empty());
+
+    // CONCATENATE COLUMNS
+    df.concatenate(df2, 1);
+    EXPECT_TRUE(df.data().is_empty());
+
+    // DF WITH DATA
+    // CONCATENATE ROWS
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cmatrix<int> data2({{7, 8, 9}, {10, 11, 12}});
+    cdata_frame<int> df3(data);
+    cdata_frame<int> df4(data2);
+    df3.concatenate(df4, 0);
+    cmatrix<int> data3({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}});
+    EXPECT_EQ(df3.data(), data3);
+
+    // CONCATENATE COLUMNS
+    df3 = cdata_frame<int>(data);
+    df3.concatenate(df4, 1);
+    cmatrix<int> data4({{1, 2, 3, 7, 8, 9}, {4, 5, 6, 10, 11, 12}});
+    EXPECT_EQ(df3.data(), data4);
+
+    // DF WITH KEYS AND DATA
+    // CONCATENATE ROWS
+    cdata_frame<int> df5({"a", "b", "c"}, data);
+    cdata_frame<int> df6({"d", "e", "f"}, data2);
+    EXPECT_THROW(df5.concatenate(df6, 0), std::invalid_argument);
+
+    // CONCATENATE COLUMNS
+    df5.concatenate(df6, 1);
+    cdata_frame<int> df8({"a", "b", "c", "d", "e", "f"}, data4);
+    EXPECT_EQ(df5.data(), df8.data());
+    EXPECT_EQ(df5.keys(), df8.keys());
+
+    // DF WITH INDEX AND DATA
+    // CONCATENATE ROWS
+    cdata_frame<int> df9(data, {"a", "b"});
+    cdata_frame<int> df10(data2, {"c", "d"});
+    df9.concatenate(df10, 0);
+    cdata_frame<int> df11(data3, {"a", "b", "c", "d"});
+    EXPECT_EQ(df9.data(), df11.data());
+    EXPECT_EQ(df9.index(), df11.index());
+
+    // CONCATENATE COLUMNS
+    EXPECT_THROW(df9.concatenate(df10, 1), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA WITH DIFFERENT KEYS AND INDEX
+    // CONCATENATE ROWS
+    cdata_frame<int> df13({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df14({"d", "e", "f"}, data2, {"c", "d"});
+    EXPECT_THROW(df13.concatenate(df14, 0), std::invalid_argument);
+
+    // CONCATENATE COLUMNS
+    EXPECT_THROW(df13.concatenate(df14, 1), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME KEYS
+    // CONCATENATE ROWS
+    cdata_frame<int> df15({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df16({"a", "b", "c"}, data2, {"c", "d"});
+    df15.concatenate(df16, 0);
+    cdata_frame<int> df17({"a", "b", "c"}, data3, {"a", "b", "c", "d"});
+    EXPECT_EQ(df15.data(), df17.data());
+    EXPECT_EQ(df15.keys(), df17.keys());
+    EXPECT_EQ(df15.index(), df17.index());
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME INDEX
+    // CONCATENATE COLUMNS
+    df15 = cdata_frame<int>({"a", "b", "c"}, data, {"a", "b"});
+    df16 = cdata_frame<int>({"d", "e", "f"}, data2, {"a", "b"});
+    df15.concatenate(df16, 1);
+    cdata_frame<int> df18({"a", "b", "c", "d", "e", "f"}, data4, {"a", "b"});
+    EXPECT_EQ(df15.data(), df18.data());
+    EXPECT_EQ(df15.keys(), df18.keys());
+    EXPECT_EQ(df15.index(), df18.index());
+
+    // INVALID AXIS
+    EXPECT_THROW(df13.concatenate(df14, 2), std::invalid_argument);
+
+    // INVALID KEYS
+    cdata_frame<int> df23({"a", "b", "c"}, data);
+    cdata_frame<int> df24({"a", "b", "c"}, data2);
+    EXPECT_THROW(df23.concatenate(df24, 1), std::invalid_argument);
+
+    // INVALID INDEX
+    cdata_frame<int> df25(data, {"a", "b"});
+    cdata_frame<int> df26(data2, {"a", "b"});
+    EXPECT_THROW(df25.concatenate(df26, 0), std::invalid_argument);
+
+    // SELF CONCATENATE
+    EXPECT_THROW(df25.concatenate(df25, 0), std::invalid_argument);
+}
+
 // ==================================================
 // STATIC
 
@@ -615,6 +715,86 @@ TEST(TestStatic, read_csv)
 
     // INVALID KEYS, INDEX AND DATA
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_and_index.csv", false, true), std::invalid_argument);
+}
+
+/** @brief Test the 'merge' method of the 'DataFrame' class. */
+TEST(TestStatic, merge)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    cdata_frame<int> df2;
+    cdata_frame<int> df3 = cdata_frame<int>::merge(df, df2);
+    EXPECT_TRUE(df3.data().is_empty());
+
+    // DF WITH DATA
+    // CONCATENATE ROWS
+    cdata_frame<int> df5({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df6({{7, 8, 9}, {10, 11, 12}});
+    cdata_frame<int> df7 = cdata_frame<int>::merge(df5, df6, 0);
+    cdata_frame<int> expected_df({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}});
+    EXPECT_EQ(df7.data(), expected_df.data());
+
+    // CONCATENATE COLUMNS
+    df7 = cdata_frame<int>::merge(df5, df6, 1);
+    cdata_frame<int> expected_df2({{1, 2, 3, 7, 8, 9}, {4, 5, 6, 10, 11, 12}});
+    EXPECT_EQ(df7.data(), expected_df2.data());
+    EXPECT_TRUE(df7.keys().empty());
+    EXPECT_TRUE(df7.index().empty());
+
+    // DF WITH KEYS AND DATA
+    // CONCATENATE ROWS
+    cdata_frame<int> df8({"a", "b", "c"}, {{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df9({"d", "e", "f"}, {{7, 8, 9}, {10, 11, 12}});
+    EXPECT_THROW(cdata_frame<int>::merge(df8, df9, 0), std::invalid_argument);
+
+    // CONCATENATE COLUMNS
+    df7 = cdata_frame<int>::merge(df8, df9, 1);
+    cdata_frame<int> expected_df3({"a", "b", "c", "d", "e", "f"}, {{1, 2, 3, 7, 8, 9}, {4, 5, 6, 10, 11, 12}});
+    EXPECT_EQ(df7.data(), expected_df3.data());
+    EXPECT_EQ(df7.keys(), expected_df3.keys());
+    EXPECT_TRUE(df7.index().empty());
+
+    // DF WITH INDEX AND DATA
+    // CONCATENATE ROWS
+    cdata_frame<int> df10({{1, 2, 3}, {4, 5, 6}}, {"a", "b"});
+    cdata_frame<int> df11({{7, 8, 9}, {10, 11, 12}}, {"c", "d"});
+    df7 = cdata_frame<int>::merge(df10, df11, 0);
+    cdata_frame<int> expected_df4({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}, {"a", "b", "c", "d"});
+    EXPECT_EQ(df7.data(), expected_df4.data());
+    EXPECT_TRUE(df7.keys().empty());
+    EXPECT_EQ(df7.index(), expected_df4.index());
+
+    // CONCATENATE COLUMNS
+    EXPECT_THROW(cdata_frame<int>::merge(df10, df11, 1), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA WITH DIFFERENT KEYS AND INDEX
+    // CONCATENATE ROWS
+    cdata_frame<int> df12({"a", "b", "c"}, {{1, 2, 3}, {4, 5, 6}}, {"a", "b"});
+    cdata_frame<int> df13({"d", "e", "f"}, {{7, 8, 9}, {10, 11, 12}}, {"c", "d"});
+    EXPECT_THROW(cdata_frame<int>::merge(df12, df13, 0), std::invalid_argument);
+
+    // CONCATENATE COLUMNS
+    EXPECT_THROW(cdata_frame<int>::merge(df12, df13, 1), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME KEYS
+    // CONCATENATE ROWS
+    cdata_frame<int> df14({"a", "b", "c"}, {{1, 2, 3}, {4, 5, 6}}, {"a", "b"});
+    cdata_frame<int> df15({"a", "b", "c"}, {{7, 8, 9}, {10, 11, 12}}, {"c", "d"});
+    df7 = cdata_frame<int>::merge(df14, df15, 0);
+    cdata_frame<int> expected_df5({"a", "b", "c"}, {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}, {10, 11, 12}}, {"a", "b", "c", "d"});
+    EXPECT_EQ(df7.data(), expected_df5.data());
+    EXPECT_EQ(df7.keys(), expected_df5.keys());
+    EXPECT_EQ(df7.index(), expected_df5.index());
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME INDEX
+    // CONCATENATE COLUMNS
+    cdata_frame<int> df16({"a", "b", "c"}, {{1, 2, 3}, {4, 5, 6}}, {"a", "b"});
+    cdata_frame<int> df17({"d", "e", "f"}, {{7, 8, 9}, {10, 11, 12}}, {"a", "b"});
+    df7 = cdata_frame<int>::merge(df16, df17, 1);
+    cdata_frame<int> expected_df6({"a", "b", "c", "d", "e", "f"}, {{1, 2, 3, 7, 8, 9}, {4, 5, 6, 10, 11, 12}}, {"a", "b"});
+    EXPECT_EQ(df7.data(), expected_df6.data());
+    EXPECT_EQ(df7.keys(), expected_df6.keys());
+    EXPECT_EQ(df7.index(), expected_df6.index());
 }
 
 // ==================================================

@@ -449,6 +449,21 @@ public:
      */
     void insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key = "");
     /**
+     * @brief Concatenate two data frames.
+     *
+     * @param df The data frame to concatenate.
+     * @param axis The axis to concatenate. 0 for rows and 1 for columns. Default is 0.
+     * @throw std::invalid_argument If the data frame is concatenated with itself.
+     * @throw std::invalid_argument If the keys of the two data frames are not the same (axis 0).
+     * @throw std::invalid_argument If the index of the two data frames are not the same (axis 1).
+     * @throw std::invalid_argument If the axis is not 0 or 1.
+     * @throw std::runtime_error If index are not unique (axis 0).
+     * @throw std::runtime_error If keys are not unique (axis 1).
+     *
+     * @ingroup manipulation
+     */
+    void concatenate(const cdata_frame<T> &df, const short unsigned int &axis = 0);
+    /**
      * @brief Push a row at the front of the data.
      *
      * @param val The row to push.
@@ -542,6 +557,23 @@ public:
      * @ingroup general
      */
     static cdata_frame<std::string> read_csv(const std::string &path, const bool &header = true, const bool &index = false, const char &sep = ',');
+    /**
+     * @brief Merge two data frames.
+     *
+     * @param df1 The first data frame to merge.
+     * @param df2 The second data frame to merge.
+     * @param axis The axis to merge. 0 for rows and 1 for columns. Default is 0.
+     * @return cdata_frame<T> The data frame merged.
+     * @throw std::invalid_argument If the data frame is concatenated with itself.
+     * @throw std::invalid_argument If the keys of the two data frames are not the same (axis 0).
+     * @throw std::invalid_argument If the index of the two data frames are not the same (axis 1).
+     * @throw std::invalid_argument If the axis is not 0 or 1.
+     * @throw std::runtime_error If index are not unique (axis 0).
+     * @throw std::runtime_error If keys are not unique (axis 1).
+     *
+     * @ingroup static
+     */
+    static cdata_frame<T> merge(const cdata_frame<T> &df1, const cdata_frame<T> &df2, const unsigned int &axis = 0);
 
     // GENERAL
     void print() const;

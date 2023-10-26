@@ -6,6 +6,14 @@
  * @defgroup static
  */
 
+template <class T>
+cdata_frame<T> cdata_frame<T>::merge(const cdata_frame<T> &df1, const cdata_frame<T> &df2, const unsigned int &axis)
+{
+    cdata_frame<T> df = df1.copy();
+    df.concatenate(df2, axis);
+    return df;
+}
+
 // ==================================================
 // FILE
 

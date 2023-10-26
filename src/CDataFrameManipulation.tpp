@@ -69,6 +69,46 @@ void cdata_frame<T>::insert_column(const size_t &pos, const std::vector<T> &val,
     cmatrix<T>::insert_column(pos, val);
 }
 
+template <class T>
+void cdata_frame<T>::concatenate(const cdata_frame<T> &df, const short unsigned int &axis)
+{
+    if (this == &df)
+        throw std::invalid_argument("Cannot concatenate a data frame with itself.");
+
+    // Axis 0: concatenate the rows
+    if (axis == 0)
+    {
+        if (m_keys != df.m_keys)
+            throw std::invalid_argument("The keys of the two data frames must be the same.");
+
+        // Concatenate the matrix
+        cmatrix<T>::concatenate(df, 0);
+
+        // Concatenate the index
+        std::vector<std::string> index_merged = df.index();
+        index_merged.insert(index_merged.begin(), m_index.begin(), m_index.end());
+        set_index(index_merged);
+    }
+
+    // Axis 1: concatenate the columns
+    else if (axis == 1)
+    {
+        if (m_index != df.m_index)
+            throw std::invalid_argument("The indexes of the two data frames must be the same.");
+
+        // Concatenate the matrix
+        cmatrix<T>::concatenate(df, 1);
+
+        // Concatenate the keys
+        std::vector<std::string> keys_merged = df.keys();
+        keys_merged.insert(keys_merged.begin(), m_keys.begin(), m_keys.end());
+        set_keys(keys_merged);
+    }
+
+    else
+        throw std::invalid_argument("Invalid axis. Axis must be 0 or 1.");
+}
+
 // ==================================================
 // PUSH
 
