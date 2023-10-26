@@ -124,3 +124,36 @@ cdata_frame<std::string> cdata_frame<T>::read_csv(const std::string &path, const
 
     return df;
 }
+
+// ==================================================
+// GENERAL PRIVATE METHODS
+
+template <class T>
+template <class U>
+short unsigned int cdata_frame<T>::__count_characters(const U &input)
+{
+    // Convert the input to string stream
+    std::stringstream ss;
+    ss << input;
+    std::string input_str = ss.str();
+
+    int count = 0;
+    size_t current_index = 0;
+
+    while (current_index < input_str.length())
+    {
+        char current_char = input_str[current_index];
+
+        // Check if the current character is not a continuation of a Unicode character
+        // 0xC0: 11000000 (mask to check if the current character is a continuation of a Unicode character)
+        // 0x80: 10000000 (continuation of a Unicode character)
+        // Ex: € -> 11100010 10000010 10101100
+        // 11100010 & 11000000 = 11000000 != 10000000 -> count++
+        if ((current_char & 0xC0) != 0x80)
+            count++;
+
+        current_index++;
+    }
+
+    return count;
+}

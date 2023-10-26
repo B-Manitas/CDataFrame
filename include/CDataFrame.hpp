@@ -92,7 +92,8 @@ private:
      *
      * @ingroup general
      */
-    short unsigned int __stream_width(const std::vector<T> data, const int &initial = 0) const;
+    template <class U>
+    short unsigned int __stream_width(const std::vector<U> data, const int &initial = 0) const;
     /**
      * @brief Compute the maximum length of the stream of the data.
      *
@@ -108,10 +109,12 @@ private:
      * @param left The left border of the data frame.
      * @param middle The middle border of the data frame.
      * @param right The right border of the data frame.
+     * @param line The line of the data frame. Default is "─".
+     * @param index The right border of the index. Default is "".
      *
      * @ingroup general
      */
-    void __print_border(const std::vector<short unsigned int> &widths, const std::string &left, const std::string &middle, const std::string &right) const;
+    void __print_border(const std::vector<short unsigned int> &widths, const std::string &left, const std::string &middle, const std::string &right, const std::string &line = "─", const std::string &index = "") const;
     /**
      * @brief Print the top border of the data frame.
      *
@@ -145,7 +148,24 @@ private:
      *
      * @ingroup general
      */
-    void __print_row(const std::vector<short unsigned int> &widths, const std::vector<std::string> &data, const std::string &index = "") const;
+    template <class U>
+    void __print_row(const std::vector<short unsigned int> &widths, const std::vector<U> &data, const std::string &index = "") const;
+    /**
+     * @brief Print the data frame.
+     *
+     * @param true_type The type T is a primitive type.
+     *
+     * @ingroup general
+     */
+    void __print(std::true_type) const;
+    /**
+     * @brief Print the data frame.
+     *
+     * @param false_type The type T is not a primitive type.
+     *
+     * @ingroup general
+     */
+    void __print(std::false_type) const;
 
     // CHECK
     /**
@@ -220,6 +240,16 @@ private:
      * @ingroup static
      */
     static std::vector<std::string> __parse_csv_line(const std::string &line, const char &sep, const bool &index, std::string *index_name = nullptr);
+    /**
+     * @brief Count the number of characters of a input.
+     *
+     * @param input The input to count the number of characters.
+     * @return short unsigned int The number of characters of the input.
+     *
+     * @ingroup static
+     */
+    template <class U>
+    static short unsigned int __count_characters(const U &input);
 
 public:
     // CONSTRUCTOR
