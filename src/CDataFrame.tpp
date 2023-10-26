@@ -29,6 +29,12 @@ std::vector<std::string> cdata_frame<T>::__generate_uids(const std::string &not_
     return uid_keys;
 }
 
+template <class T>
+cdata_frame<T> cdata_frame<T>::copy() const
+{
+    return cdata_frame<T>(m_keys, cmatrix<T>::copy(), m_index);
+}
+
 // ==================================================
 // PRINT
 

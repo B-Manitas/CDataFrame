@@ -535,6 +535,14 @@ public:
 
     // GENERAL
     void print() const;
+    /**
+     * @brief Copy the data frame.
+     *
+     * @return cdata_frame<T> The copy of the data frame.
+     *
+     * @ingroup general
+     */
+    cdata_frame<T> copy() const;
 };
 
 #include "../src/CDataFrameCheck.tpp"

@@ -617,6 +617,43 @@ TEST(TestStatic, read_csv)
     EXPECT_THROW(cdata_frame<std::string>::read_csv("test/input/invalid_header_and_index.csv", false, true), std::invalid_argument);
 }
 
+// ==================================================
+// GENERAL
+
+/** @brief Test the 'copy' method of the 'DataFrame' class. */
+TEST(TestGeneral, copy)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    cdata_frame<int> df2 = df.copy();
+    EXPECT_TRUE(df2.data().is_empty());
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    cdata_frame<int> df4 = df3.copy();
+    EXPECT_EQ(df4.data(), data);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df5({"a", "b", "c"}, data);
+    cdata_frame<int> df6 = df5.copy();
+    EXPECT_EQ(df6.data(), data);
+    EXPECT_EQ(df6.keys(), df5.keys());
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df7(data, {"a", "b"});
+    cdata_frame<int> df8 = df7.copy();
+    EXPECT_EQ(df8.data(), data);
+    EXPECT_EQ(df8.index(), df7.index());
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df9({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df10 = df9.copy();
+    EXPECT_EQ(df10.data(), data);
+    EXPECT_EQ(df10.keys(), df9.keys());
+    EXPECT_EQ(df10.index(), df9.index());
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
