@@ -834,6 +834,89 @@ TEST(TestGeneral, copy)
     EXPECT_EQ(df10.index(), df9.index());
 }
 
+// ==================================================
+// OPERATORS
+
+/** @brief Test the 'operator==' method of the 'DataFrame' class. */
+TEST(TestOperators, operator_equal)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    cdata_frame<int> df2;
+    EXPECT_TRUE(df == df2);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    cdata_frame<int> df4(data);
+    EXPECT_TRUE(df3 == df4);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df5({"a", "b", "c"}, data);
+    cdata_frame<int> df6({"a", "b", "c"}, data);
+    EXPECT_TRUE(df5 == df6);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df7(data, {"a", "b"});
+    cdata_frame<int> df8(data, {"a", "b"});
+    EXPECT_TRUE(df7 == df8);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df9({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df10({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_TRUE(df9 == df10);
+
+    // DF WITH KEYS, INDEX AND DATA WITH DIFFERENT KEYS AND INDEX
+    cdata_frame<int> df11({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df12({"d", "e", "f"}, data, {"c", "d"});
+    EXPECT_FALSE(df11 == df12);
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME KEYS
+    cdata_frame<int> df13({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df14({"a", "b", "c"}, data, {"c", "d"});
+    EXPECT_FALSE(df13 == df14);
+}
+
+/** @brief Test the 'operator!=' method of the 'DataFrame' class. */
+TEST(TestOperators, operator_not_equal)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    cdata_frame<int> df2;
+    EXPECT_FALSE(df != df2);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df3(data);
+    cdata_frame<int> df4(data);
+    EXPECT_FALSE(df3 != df4);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df5({"a", "b", "c"}, data);
+    cdata_frame<int> df6({"a", "b", "c"}, data);
+    EXPECT_FALSE(df5 != df6);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df7(data, {"a", "b"});
+    cdata_frame<int> df8(data, {"a", "b"});
+    EXPECT_FALSE(df7 != df8);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df9({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df10({"a", "b", "c"}, data, {"a", "b"});
+    EXPECT_FALSE(df9 != df10);
+
+    // DF WITH KEYS, INDEX AND DATA WITH DIFFERENT KEYS AND INDEX
+    cdata_frame<int> df11({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df12({"d", "e", "f"}, data, {"c", "d"});
+    EXPECT_TRUE(df11 != df12);
+
+    // DF WITH KEYS, INDEX AND DATA WITH SAME KEYS
+    cdata_frame<int> df13({"a", "b", "c"}, data, {"a", "b"});
+    cdata_frame<int> df14({"a", "b", "c"}, data, {"c", "d"});
+    EXPECT_TRUE(df13 != df14);
+}
+
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

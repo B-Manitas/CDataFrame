@@ -590,12 +590,35 @@ public:
      * @ingroup general
      */
     cdata_frame<T> copy() const;
+
+    // OPERATOR
+    /**
+     * @brief The equality operator.
+     * 
+     * @param df The data frame to compare.
+     * @return true If the data frames are equal.
+     * @return false If the data frames are not equal.
+     * 
+     * @ingroup operator
+     */
+    bool operator==(const cdata_frame<T> &df) const;
+    /**
+     * @brief The inequality operator.
+     * 
+     * @param df The data frame to compare.
+     * @return true If the data frames are not equal.
+     * @return false If the data frames are equal.
+     * 
+     * @ingroup operator
+     */
+    bool operator!=(const cdata_frame<T> &df) const;
 };
 
 #include "../src/CDataFrameCheck.tpp"
 #include "../src/CDataFrameConstructor.tpp"
 #include "../src/CDataFrameGetter.tpp"
 #include "../src/CDataFrameManipulation.tpp"
+#include "../src/CDataFrameOperator.tpp"
 #include "../src/CDataFrameSetter.tpp"
 #include "../src/CDataFrameStatic.tpp"
 #include "../src/CDataFrame.tpp"
