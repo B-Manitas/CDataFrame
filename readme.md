@@ -25,7 +25,13 @@ To install the library, follow these steps:
 git clone https://github.com/B-Manitas/CDataFrame.git
 ```
 
-2. Include the [`CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
+2. Install required libraries using the following commands:
+
+```bash
+make install
+```
+
+3. Include the [`CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
 
 ## Hierarchical Structure
 

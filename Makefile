@@ -49,4 +49,9 @@ docs :
 
 clean : clean_obj clean_exe
 
-.PHONY : all test main clean_obj clean_exe docs clean
+install :
+	mkdir lib
+	git clone https://github.com/B-Manitas/CDataFrame.git
+	cd ..
+
+.PHONY : all test main clean_obj clean_exe docs clean install
