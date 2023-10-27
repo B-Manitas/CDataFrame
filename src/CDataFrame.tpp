@@ -35,6 +35,14 @@ cdata_frame<T> cdata_frame<T>::copy() const
     return cdata_frame<T>(m_keys, cmatrix<T>::copy(), m_index);
 }
 
+template <class T>
+void cdata_frame<T>::clear()
+{
+    m_keys.clear();
+    m_index.clear();
+    cmatrix<T>::clear();
+}
+
 // ==================================================
 // PRINT
 

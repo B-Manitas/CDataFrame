@@ -834,6 +834,45 @@ TEST(TestGeneral, copy)
     EXPECT_EQ(df10.index(), df9.index());
 }
 
+TEST(TestGeneral, clear)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    df.clear();
+    EXPECT_TRUE(df.data().is_empty());
+    EXPECT_TRUE(df.index().empty());
+    EXPECT_TRUE(df.keys().empty());
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});
+    cdata_frame<int> df2 = cdata_frame<int>(data);
+    df2.clear();
+    EXPECT_TRUE(df2.data().is_empty());
+    EXPECT_TRUE(df2.index().empty());
+    EXPECT_TRUE(df2.keys().empty());
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df3({"a", "b", "c"}, data);
+    df3.clear();
+    EXPECT_TRUE(df3.data().is_empty());
+    EXPECT_TRUE(df3.index().empty());
+    EXPECT_TRUE(df3.keys().empty());
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df4(data, {"a", "b"});
+    df4.clear();
+    EXPECT_TRUE(df4.data().is_empty());
+    EXPECT_TRUE(df4.index().empty());
+    EXPECT_TRUE(df4.keys().empty());
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df5({"a", "b", "c"}, data, {"a", "b"});
+    df5.clear();
+    EXPECT_TRUE(df5.data().is_empty());
+    EXPECT_TRUE(df5.index().empty());
+    EXPECT_TRUE(df5.keys().empty());
+}
+
 // ==================================================
 // OPERATORS
 

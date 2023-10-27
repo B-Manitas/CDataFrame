@@ -590,6 +590,12 @@ public:
      * @ingroup general
      */
     cdata_frame<T> copy() const;
+    /**
+     * @brief Cleat the data frame.
+     * 
+     * @ingroup general
+     */
+    void clear();
 
     // OPERATOR
     /**
