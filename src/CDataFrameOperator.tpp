@@ -2,7 +2,7 @@
  * @file CDataFrame.tpp
  * @brief This file contains the implementation of operators and methods of the 'CDataFrame' class.
 
- * @see cdata_frame.hpp
+ * @see CDataFrame.hpp
  * @defgroup check
  */
 

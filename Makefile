@@ -39,4 +39,14 @@ clean_exe :
 	rm -rf $(TEST_EXE) $(MAIN_EXE) $(EXE)
 	clear
 
+docs :
+	doxygen doxygen.conf
+	cd docs/latex 
+	make pdf
+	cd ../..
+	mv docs/latex/refman.pdf docs/cdataframe.pdf
+	clear
+
 clean : clean_obj clean_exe
+
+.PHONY : all test main clean_obj clean_exe docs clean
