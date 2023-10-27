@@ -51,7 +51,8 @@ clean : clean_obj clean_exe
 
 install :
 	mkdir lib
-	git clone https://github.com/B-Manitas/CDataFrame.git
+	cd lib
+	git clone https://github.com/B-Manitas/CMatrix.git
 	cd ..
 
 .PHONY : all test main clean_obj clean_exe docs clean install
