@@ -49,7 +49,7 @@ CMatrix is structured as follows:
 
 ## Documentation
 
-For detailed information on how to use CMatrix, consult the [documentation](cdataframe.pdf).
+For detailed information on how to use CMatrix, consult the [documentation](docs/cdataframe.pdf).
 
 ## See Also
 
