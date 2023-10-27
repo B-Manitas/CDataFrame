@@ -1,6 +1,5 @@
 /**
  * @file CDataFrameCheck.tpp
- *
  * @brief File containing the implementation of check methods of the 'DataFrame' class.
  *
  * @see CDataFrame.hpp

@@ -77,7 +77,7 @@ private:
      * @brief Generate unique index.
      *
      * @param len The length of the vector to generate.
-     * @param not_in The index to not generate.
+     * @param not_in The index to not generate. Default is "".
      * @return std::vector<std::string> The unique keys.
      *
      * @ingroup general
@@ -265,12 +265,20 @@ public:
     // CONSTRUCTOR
     /**
      * @brief Construct a new CDataFrame object.
+     *
+     * @note The data, keys and index are empty.
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
      */
     cdata_frame();
     /**
      * @brief Construct a new CDataFrame object.
      *
      * @param data The cmatrix object containing the data.
+     *
+     * @note The keys and index are empty.
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>(cmatrix<int>({{1, 2}, {3, 4}}));
      */
     cdata_frame(const cmatrix<T> &data);
     /**
@@ -281,6 +289,9 @@ public:
      * @throw std::invalid_argument If the number of keys is different from the number of columns of the data.
      *
      * @note The number of keys must be equal to the number of columns of the data.
+     * @note The index are empty.
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}));
      */
     cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data);
     /**
@@ -291,6 +302,9 @@ public:
      * @throw std::invalid_argument If the number of index is different from the number of rows of the data.
      *
      * @note The number of index must be equal to the number of rows of the data.
+     * @note The keys are empty.
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>(cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
      */
     cdata_frame(const cmatrix<T> &data, const std::vector<std::string> &index);
     /**
@@ -304,6 +318,8 @@ public:
      *
      * @note The number of keys must be equal to the number of columns of the data.
      * @note The number of index must be equal to the number of rows of the data.
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
      */
     cdata_frame(const std::vector<std::string> &keys, const cmatrix<T> &data, const std::vector<std::string> &index);
     /**
@@ -401,6 +417,9 @@ public:
      *
      * @note If data is empty, the keys are empty.
      * @ingroup setter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.set_keys({"key1", "key2"});
      */
     void set_keys(const std::vector<std::string> &keys);
     /**
@@ -412,6 +431,9 @@ public:
      *
      * @note If data is empty, the index are empty.
      * @ingroup setter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.set_index({"index1", "index2"});
      */
     void set_index(const std::vector<std::string> &index);
     /**
@@ -420,6 +442,9 @@ public:
      * @param data
      *
      * @ingroup setter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.set_data(cmatrix<int>({{1, 2}, {3, 4}}));
      */
     void set_data(const cmatrix<T> &data);
 
@@ -429,11 +454,14 @@ public:
      *
      * @param pos The position of the row.
      * @param val The row to insert.
-     * @param index The index of the row.
+     * @param index The index of the row. Default is "".
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
      * @note If the index are empty, the index will be generated.
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.insert_row(0, {1, 2}, "index1");
      */
     void insert_row(const size_t &pos, const std::vector<T> &val, const std::string &index = "");
     /**
@@ -441,11 +469,14 @@ public:
      *
      * @param pos The position of the column.
      * @param val The column to insert.
-     * @param key The key of the column.
+     * @param key The key of the column. Default is "".
      * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
      *
      * @note If the keys are empty, the keys will be generated.
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.insert_column(0, {1, 2}, "key1");
      */
     void insert_column(const size_t &pos, const std::vector<T> &val, const std::string &key = "");
     /**
@@ -461,46 +492,62 @@ public:
      * @throw std::runtime_error If keys are not unique (axis 1).
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df1 = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * cdata_frame<int> df2 = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{5, 6}, {7, 8}}), {"index3", "index4"});
+     * df1.concatenate(df2);
      */
     void concatenate(const cdata_frame<T> &df, const short unsigned int &axis = 0);
     /**
      * @brief Push a row at the front of the data.
      *
      * @param val The row to push.
-     * @param index The index of the row.
+     * @param index The index of the row. Default is "".
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.push_row_front({1, 2}, "index1");
      */
     void push_row_front(const std::vector<T> &val, const std::string &index = "");
     /**
      * @brief Push a row at the back of the data.
      *
      * @param val The row to push.
-     * @param index The index of the row.
+     * @param index The index of the row. Default is "".
      * @throw std::invalid_argument If the number of columns of the row is different from the number of columns of the data.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.push_row_back({1, 2}, "index1");
      */
     void push_row_back(const std::vector<T> &val, const std::string &index = "");
     /**
      * @brief Push a column at the front of the data.
      *
      * @param val The column to push.
-     * @param key The key of the column.
+     * @param key The key of the column. Default is "".
      * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.push_col_front({1, 2}, "key1");
      */
     void push_col_front(const std::vector<T> &val, const std::string &key = "");
     /**
      * @brief Push a column at the back of the data.
      *
      * @param val The column to push.
-     * @param key The key of the column.
+     * @param key The key of the column. Default is "".
      * @throw std::invalid_argument If the number of rows of the column is different from the number of rows of the data.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>();
+     * df.push_col_back({1, 2}, "key1");
      */
     void push_col_back(const std::vector<T> &val, const std::string &key = "");
     /**
@@ -509,6 +556,9 @@ public:
      * @param pos The position of the row.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>(cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.remove_row(0);
      */
     void remove_row(const size_t &pos);
     /**
@@ -518,6 +568,9 @@ public:
      * @throw std::invalid_argument If the index doesn't exist.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>(cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.remove_row("index1");
      */
     void remove_row(const std::string &index);
     /**
@@ -526,6 +579,9 @@ public:
      * @param pos The position of the column.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}));
+     * df.remove_column(0);
      */
     void remove_column(const size_t &pos);
     /**
@@ -535,11 +591,30 @@ public:
      * @throw std::invalid_argument If the key doesn't exist.
      *
      * @ingroup manipulation
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}));
+     * df.remove_column("key1");
      */
     void remove_column(const std::string &key);
 
     // CHECK
+    /**
+     * @brief Check if the keys are empty.
+     *
+     * @return true If the keys are empty.
+     * @return false If the keys are not empty.
+     *
+     * @ingroup check
+     */
     bool has_keys() const;
+    /**
+     * @brief Check if the indexes are empty.
+     *
+     * @return true If the indexes are empty.
+     * @return false If the indexes are not empty.
+     *
+     * @ingroup check
+     */
     bool has_index() const;
 
     // STATIC
@@ -555,6 +630,8 @@ public:
      * @note If the header is enabled, the first line of the csv file will be used as keys.
      * @note If the data frame is empty, keys and index are empty.
      * @ingroup general
+     * @example
+     * cdata_frame<std::string> df = cdata_frame<std::string>::read_csv("data.csv", true, false, ',');
      */
     static cdata_frame<std::string> read_csv(const std::string &path, const bool &header = true, const bool &index = false, const char &sep = ',');
     /**
@@ -572,6 +649,10 @@ public:
      * @throw std::runtime_error If keys are not unique (axis 1).
      *
      * @ingroup static
+     * @example
+     * cdata_frame<int> df1 = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * cdata_frame<int> df2 = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{5, 6}, {7, 8}}), {"index3", "index4"});
+     * cdata_frame<int> df3 = cdata_frame<int>::merge(df1, df2);
      */
     static cdata_frame<T> merge(const cdata_frame<T> &df1, const cdata_frame<T> &df2, const unsigned int &axis = 0);
 
@@ -592,7 +673,7 @@ public:
     cdata_frame<T> copy() const;
     /**
      * @brief Cleat the data frame.
-     * 
+     *
      * @ingroup general
      */
     void clear();
@@ -600,21 +681,21 @@ public:
     // OPERATOR
     /**
      * @brief The equality operator.
-     * 
+     *
      * @param df The data frame to compare.
      * @return true If the data frames are equal.
      * @return false If the data frames are not equal.
-     * 
+     *
      * @ingroup operator
      */
     bool operator==(const cdata_frame<T> &df) const;
     /**
      * @brief The inequality operator.
-     * 
+     *
      * @param df The data frame to compare.
      * @return true If the data frames are not equal.
      * @return false If the data frames are equal.
-     * 
+     *
      * @ingroup operator
      */
     bool operator!=(const cdata_frame<T> &df) const;
