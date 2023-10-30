@@ -51,8 +51,6 @@ clean : clean_obj clean_exe
 
 install :
 	mkdir lib
-	cd lib
-	git clone https://github.com/B-Manitas/CMatrix.git
-	cd ..
+	git clone https://github.com/B-Manitas/CMatrix.git lib/CMatrix
 
 .PHONY : all test main clean_obj clean_exe docs clean install
