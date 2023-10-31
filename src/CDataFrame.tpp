@@ -94,10 +94,12 @@ std::vector<short unsigned int> cdata_frame<T>::__stream_widths_vec() const
 }
 
 template <class T>
-void cdata_frame<T>::__print_border(const std::vector<short unsigned int> &widths, const std::string &start, const std::string &middle, const std::string &end, const std::string &line, const std::string &index) const
+std::string cdata_frame<T>::__print_border(const std::vector<short unsigned int> &widths, const std::string &start, const std::string &middle, const std::string &end, const std::string &line, const std::string &index) const
 {
+    std::ostringstream os;
+
     // Print the start of the border (┌, ├ or └)
-    std::cout << start;
+    os << start;
 
     // Iterate over the widths to print the middle of the border (┬, ┼ or ┴)
     for (size_t i = 0; i < widths.size(); i++)
@@ -108,61 +110,65 @@ void cdata_frame<T>::__print_border(const std::vector<short unsigned int> &width
 
         // Print the middle
         for (size_t j = 0; j < widths[i]; j++)
-            std::cout << line;
+            os << line;
 
         // Print the index border (╥, ╫ or ╨)
         if (i == 0 and not index.empty() && has_index())
-            std::cout << index;
+            os << index;
 
         // Print the middle of the border (┬, ┼ or ┴)
         else if (i != widths.size() - 1)
-            std::cout << middle;
+            os << middle;
     }
 
     // Print the end of the border (┐, ┤ or ┘)
-    std::cout << end << std::endl;
+    os << end << std::endl;
+
+    return os.str();
 }
 
 template <class T>
-void cdata_frame<T>::__print_border_top(const std::vector<short unsigned int> &widths) const
+std::string cdata_frame<T>::__print_border_top(const std::vector<short unsigned int> &widths) const
 {
-    __print_border(widths, "┌", "┬", "┐", "─", "╥");
+    return __print_border(widths, "┌", "┬", "┐", "─", "╥");
 }
 
 template <class T>
-void cdata_frame<T>::__print_border_middle(const std::vector<short unsigned int> &widths) const
+std::string cdata_frame<T>::__print_border_middle(const std::vector<short unsigned int> &widths) const
 {
-    __print_border(widths, "├", "┼", "┤", "─", "╫");
+    return __print_border(widths, "├", "┼", "┤", "─", "╫");
 }
 
 template <class T>
-void cdata_frame<T>::__print_border_bottom(const std::vector<short unsigned int> &widths) const
+std::string cdata_frame<T>::__print_border_bottom(const std::vector<short unsigned int> &widths) const
 {
-    __print_border(widths, "└", "┴", "┘", "─", "╨");
+    return __print_border(widths, "└", "┴", "┘", "─", "╨");
 }
 
 template <class T>
 template <class U>
-void cdata_frame<T>::__print_row(const std::vector<short unsigned int> &widths, const std::vector<U> &data, const std::string &index) const
+std::string cdata_frame<T>::__print_row(const std::vector<short unsigned int> &widths, const std::vector<U> &data, const std::string &index) const
 {
+    std::ostringstream os;
+
     // Handle the print of the first column, depending on if has index, keys or not
     // When the row is the header, the index is empty (display: '| |')
     if (has_index() and index == "")
     {
         std::string space = std::string(widths[0] - 2, ' ');
-        std::cout << "│ " << space << " ║ ";
+        os << "│ " << space << " ║ ";
     }
 
     // If not the header, print the index (display: '| index |')
     else if (has_index())
     {
         std::string space = std::string(widths[0] - 2 - index.size(), ' ');
-        std::cout << "│ " << index << space << " ║ ";
+        os << "│ " << index << space << " ║ ";
     }
 
     // If hasn't index, print the '| ' for the right border of the column (display: '| ')
     else
-        std::cout << "│ ";
+        os << "│ ";
 
     // Handle the print of the rest of the columns
     for (size_t i = 0; i < data.size(); i++)
@@ -171,32 +177,36 @@ void cdata_frame<T>::__print_row(const std::vector<short unsigned int> &widths, 
         std::string space = std::string(widths[i + 1] - cdata_frame<T>::__count_characters(data[i]) - 2, ' ');
 
         // Print the element of the row
-        std::cout << data[i] << space;
+        os << data[i] << space;
 
         // Print the '|' except for the last column
         if (i < data.size())
-            std::cout << " │ ";
+            os << " │ ";
     }
 
-    std::cout << std::endl;
+    os << std::endl;
+
+    return os.str();
 }
 
 template <class T>
-void cdata_frame<T>::__print(const unsigned int &n, std::true_type) const
+std::string cdata_frame<T>::__print(std::true_type, const unsigned int &n) const
 {
+    std::ostringstream os;
+
     // Compute the widths for each column
     std::vector<short unsigned int> columns_widths = __stream_widths_vec();
 
     // Print the top border
-    __print_border_top(columns_widths);
+    os << __print_border_top(columns_widths);
 
     // Print header
     if (has_keys())
     {
         // Index is empty because the header doesn't have index
-        __print_row(columns_widths, m_keys, "");
+        os << __print_row(columns_widths, m_keys, "");
 
-        __print_border(columns_widths, "╞", "╪", "╡", "═", "╬");
+        os << __print_border(columns_widths, "╞", "╪", "╡", "═", "╬");
     }
 
     // Print data
@@ -208,65 +218,73 @@ void cdata_frame<T>::__print(const unsigned int &n, std::true_type) const
         const std::string index = has_index() ? m_index[i] : "";
 
         // Print the row
-        __print_row(columns_widths, cmatrix<T>::rows_vec(i), index);
+        os << __print_row(columns_widths, cmatrix<T>::rows_vec(i), index);
 
         // Print the middle line except for the last row
         if (i != n_rows - 1)
-            __print_border_middle(columns_widths);
+            os << __print_border_middle(columns_widths);
     }
 
     // Print the bottom border
-    __print_border_bottom(columns_widths);
+    os << __print_border_bottom(columns_widths);
+
+    return os.str();
 }
 
 template <class T>
-void cdata_frame<T>::__print(const unsigned int &n, std::false_type) const
+std::string cdata_frame<T>::__print(std::false_type, const unsigned int &n) const
 {
+    std::ostringstream os;
+
     // Print the header
-    std::cout << "Keys  : ";
+    os << "Keys  : ";
 
     for (const std::string key : m_keys)
-        std::cout << key << " | ";
+        os << key << " | ";
 
-    std::cout << std::endl;
+    os << std::endl;
 
     // Print the index
-    std::cout << "Index : ";
+    os << "Index : ";
 
     for (const std::string index : m_index)
-        std::cout << index << " | ";
+        os << index << " | ";
 
-    std::cout << std::endl;
+    os << std::endl;
 
     // Print the data
     const size_t n_rows = std::min((size_t)n, cmatrix<T>::height());
-    std::cout << "Data  : [";
+    os << "Data  : [";
 
     for (size_t i = 0; i < n_rows; i++)
     {
-        std::cout << "[ ";
+        os << "[ ";
 
         for (size_t j = 0; j < cmatrix<T>::width(); j++)
         {
-            std::cout << cmatrix<T>::cell(i, j);
+            os << cmatrix<T>::cell(i, j);
 
             if (j != cmatrix<T>::width() - 1)
-                std::cout << ", ";
+                os << ", ";
         }
 
-        std::cout << " ]";
+        os << " ]";
 
         if (i != n_rows - 1)
-            std::cout << ", ";
+            os << ", ";
     }
 
-    std::cout << "]" << std::endl;
+    os << "]" << std::endl;
+
+    return os.str();
 }
 
 template <class T>
 void cdata_frame<T>::print(const unsigned int &n) const
 {
-    __print(n, std::integral_constant < bool, std::is_fundamental<T>::value or std::is_same<T, std::string>::value > {});
+    std::ostringstream os;
+    os << __print(std::integral_constant < bool, std::is_fundamental<T>::value or std::is_same<T, std::string>::value > {}, n);
+    std::cout << os.str();
 }
 
 template <class T>

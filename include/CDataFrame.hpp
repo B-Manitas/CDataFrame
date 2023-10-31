@@ -111,63 +111,50 @@ private:
      * @param right The right border of the data frame.
      * @param line The line of the data frame. Default is "─".
      * @param index The right border of the index. Default is "".
+     * @return std::string The border of the data frame.
      *
      * @ingroup general
      */
-    void __print_border(const std::vector<short unsigned int> &widths, const std::string &left, const std::string &middle, const std::string &right, const std::string &line = "─", const std::string &index = "") const;
+    std::string __print_border(const std::vector<short unsigned int> &widths, const std::string &left, const std::string &middle, const std::string &right, const std::string &line = "─", const std::string &index = "") const;
     /**
      * @brief Print the top border of the data frame.
      *
      * @param widths The widths of the data frame.
+     * @return std::string The top border of the data frame.
      *
      * @ingroup general
      */
-    void __print_border_top(const std::vector<short unsigned int> &widths) const;
+    std::string __print_border_top(const std::vector<short unsigned int> &widths) const;
     /**
      * @brief Print the middle border of the data frame.
      *
      * @param widths The widths of the data frame.
+     * @return std::string The middle border of the data frame.
      *
      * @ingroup general
      */
-    void __print_border_middle(const std::vector<short unsigned int> &widths) const;
+    std::string __print_border_middle(const std::vector<short unsigned int> &widths) const;
     /**
      * @brief Print the bottom border of the data frame.
      *
      * @param widths The widths of the data frame.
+     * @return std::string The bottom border of the data frame.
      *
      * @ingroup general
      */
-    void __print_border_bottom(const std::vector<short unsigned int> &widths) const;
+    std::string __print_border_bottom(const std::vector<short unsigned int> &widths) const;
     /**
      * @brief Print a row of the data frame.
      *
      * @param widths The widths stream for each element of the row.
      * @param data The data of the row.
      * @param index The index of the row.
+     * @return std::string The row of the data frame.
      *
      * @ingroup general
      */
     template <class U>
-    void __print_row(const std::vector<short unsigned int> &widths, const std::vector<U> &data, const std::string &index = "") const;
-    /**
-     * @brief Print the data frame.
-     *
-     * @param n The number of rows to print.
-     * @param true_type The type T is a primitive type.
-     *
-     * @ingroup general
-     */
-    void __print(const unsigned int &n, std::true_type) const;
-    /**
-     * @brief Print the data frame.
-     *
-     * @param n The number of rows to print.
-     * @param false_type The type T is not a primitive type.
-     *
-     * @ingroup general
-     */
-    void __print(const unsigned int &n, std::false_type) const;
+    std::string __print_row(const std::vector<short unsigned int> &widths, const std::vector<U> &data, const std::string &index = "") const;
 
     // CHECK
     /**
@@ -726,6 +713,24 @@ public:
     /**
      * @brief Print the data frame.
      *
+     * @param true_type The type T is a primitive type.
+     * @param n The number of rows to print.
+     *
+     * @ingroup general
+     */
+    std::string __print(std::true_type, const unsigned int &n) const;
+    /**
+     * @brief Print the data frame.
+     *
+     * @param false_type The type T is not a primitive type.
+     * @param n The number of rows to print.
+     *
+     * @ingroup general
+     */
+    std::string __print(std::false_type, const unsigned int &n) const;
+    /**
+     * @brief Print the data frame.
+     *
      * @param n The number of rows to print. Default is 5.
      *
      * @ingroup general
@@ -773,6 +778,17 @@ public:
      * @ingroup operator
      */
     bool operator!=(const cdata_frame<T> &df) const;
+    /**
+     * @brief The stream operator.
+     *
+     * @param os The output stream.
+     * @param df The data frame to print.
+     * @return std::ostream& The output stream.
+     *
+     * @ingroup operator
+     */
+    template <class U>
+    friend std::ostream &operator<<(std::ostream &out, const cdata_frame<U> &df);
 };
 
 #include "../src/CDataFrameCheck.tpp"
