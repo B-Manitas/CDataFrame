@@ -192,6 +192,66 @@ TEST(TestGetter, columns)
     EXPECT_EQ(df6.columns({"b", "a", "b"}), cmatrix<int>({{2, 1, 2}, {5, 4, 5}}));
 }
 
+/** @brief Test the 'slice_rows' method of the 'DataFrame' class. */
+TEST(TestGetter, slice_rows)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.slice_rows(0, 1), std::out_of_range);
+    EXPECT_THROW(df.slice_rows("a", "b"), std::invalid_argument);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+    cdata_frame<int> df3(data);
+    EXPECT_THROW(df3.slice_rows(0, 3), std::out_of_range);
+    EXPECT_THROW(df3.slice_rows("a", "c"), std::invalid_argument);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_THROW(df4.slice_rows(0, 3), std::out_of_range);
+    EXPECT_THROW(df4.slice_rows("a", "c"), std::invalid_argument);
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b", "c"});
+    EXPECT_EQ(df5.slice_rows(0, 1), (cdata_frame<int>({{1, 2, 3}, {4, 5, 6}}, {"a", "b"})));
+    EXPECT_EQ(df5.slice_rows("a", "b"), (cdata_frame<int>({{1, 2, 3}, {4, 5, 6}}, {"a", "b"})));
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b", "c"});
+    EXPECT_THROW(df6.slice_rows(0, 3), std::out_of_range);
+    EXPECT_THROW(df6.slice_rows("a", "d"), std::invalid_argument);
+}
+
+/** @brief Test the 'slice_columns' method of the 'DataFrame' class. */
+TEST(TestGetter, slice_columns)
+{
+    // DF EMPTY
+    cdata_frame<int> df;
+    EXPECT_THROW(df.slice_columns(0, 1), std::out_of_range);
+    EXPECT_THROW(df.slice_columns("a", "b"), std::invalid_argument);
+
+    // DF WITH DATA
+    cmatrix<int> data({{1, 2, 3}, {4, 5, 6}, {7, 8, 9}});
+    cdata_frame<int> df3(data);
+    EXPECT_THROW(df3.slice_columns(0, 3), std::out_of_range);
+    EXPECT_THROW(df3.slice_columns("a", "c"), std::invalid_argument);
+
+    // DF WITH KEYS AND DATA
+    cdata_frame<int> df4({"a", "b", "c"}, data);
+    EXPECT_EQ(df4.slice_columns(0, 1), (cdata_frame<int>({"a", "b"}, {{1, 2}, {4, 5}, {7, 8}})));
+    EXPECT_EQ(df4.slice_columns("a", "b"), (cdata_frame<int>({"a", "b"}, {{1, 2}, {4, 5}, {7, 8}})));
+
+    // DF WITH INDEX AND DATA
+    cdata_frame<int> df5(data, {"a", "b", "c"});
+    EXPECT_THROW(df5.slice_columns(0, 3), std::out_of_range);
+    EXPECT_THROW(df5.slice_columns("a", "d"), std::invalid_argument);
+
+    // DF WITH KEYS, INDEX AND DATA
+    cdata_frame<int> df6({"a", "b", "c"}, data, {"a", "b", "c"});
+    EXPECT_EQ(df6.slice_columns(0, 1), (cdata_frame<int>({"a", "b"}, {{1, 2}, {4, 5}, {7, 8}}, {"a", "b", "c"})));
+    EXPECT_EQ(df6.slice_columns("a", "b"), (cdata_frame<int>({"a", "b"}, {{1, 2}, {4, 5}, {7, 8}}, {"a", "b", "c"})));
+}
+
 // ==================================================
 // SETTER
 

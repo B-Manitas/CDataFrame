@@ -80,6 +80,46 @@ cmatrix<T> cdata_frame<T>::columns(const std::vector<std::string> &keys) const
     return cmatrix<T>::columns(columns);
 }
 
+template <class T>
+cdata_frame<T> cdata_frame<T>::slice_rows(const std::string &start, const std::string &end) const
+{
+    return slice_rows(__get_index_pos(start), __get_index_pos(end));
+}
+
+template <class T>
+cdata_frame<T> cdata_frame<T>::slice_rows(const size_t &start, const size_t &end) const
+{
+    // Get the sub-dataframe
+    cmatrix<T> data = cmatrix<T>::slice_rows(start, end);
+
+    // Get the index of the rows of the sub-dataframe
+    std::vector<std::string> index;
+    if (has_index())
+        index = std::vector<std::string>(m_index.begin() + start, m_index.begin() + end + 1);
+
+    return cdata_frame<T>(m_keys, data, index);
+}
+
+template <class T>
+cdata_frame<T> cdata_frame<T>::slice_columns(const std::string &start, const std::string &end) const
+{
+    return slice_columns(__get_key_pos(start), __get_key_pos(end));
+}
+
+template <class T>
+cdata_frame<T> cdata_frame<T>::slice_columns(const size_t &start, const size_t &end) const
+{
+    // Get the sub-dataframe
+    cmatrix<T> data = cmatrix<T>::slice_columns(start, end);
+
+    // Get the keys of the sub-dataframe
+    std::vector<std::string> keys;
+    if (has_keys())
+        keys = std::vector<std::string>(m_keys.begin() + start, m_keys.begin() + end + 1);
+
+    return cdata_frame<T>(keys, data, m_index);
+}
+
 // ==================================================
 // PRIVATE
 

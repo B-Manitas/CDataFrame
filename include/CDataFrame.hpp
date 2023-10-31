@@ -408,6 +408,70 @@ public:
      * @ingroup getter
      */
     cmatrix<T> columns(const std::vector<std::string> &keys) const;
+    /**
+     * @brief Get the rows between the given indexes.
+     *
+     * @param start The start index (included).
+     * @param end The end index (included).
+     * @return cdata_frame<T> The rows between the given indexes.
+     * @throw std::invalid_argument If the start index is greater than the end index.
+     * @throw std::invalid_argument If the start index doesn't exist.
+     * @throw std::invalid_argument If the end index doesn't exist.
+     *
+     * @ingroup getter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.slice_rows("index1", "index2");
+     */
+    cdata_frame<T> slice_rows(const std::string &start, const std::string &end) const;
+    /**
+     * @brief Get the rows between the given indexes.
+     *
+     * @param start The start index (included).
+     * @param end The end index (included).
+     * @return cdata_frame<T> The rows between the given indexes.
+     * @throw std::invalid_argument If the start index is greater than the end index.
+     * @throw std::out_of_range If the start index doesn't exist.
+     * @throw std::out_of_range If the end index doesn't exist.
+     *
+     * @ingroup getter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.slice_rows(0, 1);
+     */
+    cdata_frame<T> slice_rows(const size_t &start, const size_t &end) const;
+    /**
+     * @brief Get the columns between the given keys.
+     *
+     * @param start The start key (included).
+     * @param end The end key (included).
+     * @return cdata_frame<T> The columns between the given keys.
+     * @throw std::invalid_argument If the start key is greater than the end key.
+     * @throw std::invalid_argument If the start key doesn't exist.
+     * @throw std::invalid_argument If the end key doesn't exist.
+     *
+     * @ingroup getter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.slice_rows("key1", "key2");
+     */
+    cdata_frame<T> slice_columns(const std::string &start, const std::string &end) const;
+    /**
+     * @brief Get the columns between the given keys.
+     *
+     * @param start The start key (included).
+     * @param end The end key (included).
+     * @return cdata_frame<T> The columns between the given keys.
+     * @throw std::invalid_argument If the start key is greater than the end key.
+     * @throw std::out_of_range If the start key doesn't exist.
+     * @throw std::out_of_range If the end key doesn't exist.
+     *
+     * @ingroup getter
+     * @example
+     * cdata_frame<int> df = cdata_frame<int>({"key1", "key2"}, cmatrix<int>({{1, 2}, {3, 4}}), {"index1", "index2"});
+     * df.slice_rows(0, 1);
+     */
+    cdata_frame<T> slice_columns(const size_t &start, const size_t &end) const;
 
     // SETTER
     /**
