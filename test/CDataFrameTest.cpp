@@ -19,8 +19,8 @@ TEST(TestConstructor, Constructor)
     cdata_frame<int> df;
     EXPECT_EQ(df.keys().size(), 0);
     EXPECT_EQ(df.index().size(), 0);
-    EXPECT_EQ(df.data().dim_h(), 0);
-    EXPECT_EQ(df.data().dim_v(), 0);
+    EXPECT_EQ(df.data().width(), 0);
+    EXPECT_EQ(df.data().height(), 0);
 
     // DF WITH DATA
     cmatrix<int> data({{1, 2, 3}, {4, 5, 6}});

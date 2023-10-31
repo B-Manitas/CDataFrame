@@ -73,7 +73,7 @@ template <class T>
 std::vector<short unsigned int> cdata_frame<T>::__stream_widths_vec() const
 {
     // The size of the vector is the number of columns + 1 (for the index at the position 0)
-    const size_t size = cmatrix<T>::dim_h() + 1;
+    const size_t size = cmatrix<T>::width() + 1;
     std::vector<short unsigned int> widths(size, 0);
 
     // Add the width of the index
@@ -200,7 +200,7 @@ void cdata_frame<T>::__print(const unsigned int &n, std::true_type) const
     }
 
     // Print data
-    const size_t n_rows = std::min((size_t)n, cmatrix<T>::dim_v());
+    const size_t n_rows = std::min((size_t)n, cmatrix<T>::height());
 
     for (size_t i = 0; i < n_rows; i++)
     {
@@ -239,18 +239,18 @@ void cdata_frame<T>::__print(const unsigned int &n, std::false_type) const
     std::cout << std::endl;
 
     // Print the data
-    const size_t n_rows = std::min((size_t)n, cmatrix<T>::dim_v());
+    const size_t n_rows = std::min((size_t)n, cmatrix<T>::height());
     std::cout << "Data  : [";
 
     for (size_t i = 0; i < n_rows; i++)
     {
         std::cout << "[ ";
 
-        for (size_t j = 0; j < cmatrix<T>::dim_h(); j++)
+        for (size_t j = 0; j < cmatrix<T>::width(); j++)
         {
             std::cout << cmatrix<T>::cell(i, j);
 
-            if (j != cmatrix<T>::dim_h() - 1)
+            if (j != cmatrix<T>::width() - 1)
                 std::cout << ", ";
         }
 
@@ -275,6 +275,6 @@ void cdata_frame<T>::info() const
     std::cout << "type of data: " << typeid(T).name() << std::endl;
     std::cout << "number of keys: " << m_keys.size() << std::endl;
     std::cout << "number of index: " << m_index.size() << std::endl;
-    std::cout << "number of rows: " << cmatrix<T>::dim_v() << std::endl;
-    std::cout << "number of columns: " << cmatrix<T>::dim_h() << std::endl;
+    std::cout << "number of rows: " << cmatrix<T>::height() << std::endl;
+    std::cout << "number of columns: " << cmatrix<T>::width() << std::endl;
 }
