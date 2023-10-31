@@ -668,6 +668,12 @@ public:
      */
     void print(const unsigned int &n = 5) const;
     /**
+     * @brief Show informations about the data frame.
+     *
+     * @ingroup general
+     */
+    void info() const;
+    /**
      * @brief Copy the data frame.
      *
      * @return cdata_frame<T> The copy of the data frame.

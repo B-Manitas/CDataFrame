@@ -268,3 +268,13 @@ void cdata_frame<T>::print(const unsigned int &n) const
 {
     __print(n, std::integral_constant < bool, std::is_fundamental<T>::value or std::is_same<T, std::string>::value > {});
 }
+
+template <class T>
+void cdata_frame<T>::info() const 
+{
+    std::cout << "type of data: " << typeid(T).name() << std::endl;
+    std::cout << "number of keys: " << m_keys.size() << std::endl;
+    std::cout << "number of index: " << m_index.size() << std::endl;
+    std::cout << "number of rows: " << cmatrix<T>::dim_v() << std::endl;
+    std::cout << "number of columns: " << cmatrix<T>::dim_h() << std::endl;
+}
