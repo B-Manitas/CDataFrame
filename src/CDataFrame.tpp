@@ -182,7 +182,7 @@ void cdata_frame<T>::__print_row(const std::vector<short unsigned int> &widths, 
 }
 
 template <class T>
-void cdata_frame<T>::__print(std::true_type) const
+void cdata_frame<T>::__print(const unsigned int &n, std::true_type) const
 {
     // Compute the widths for each column
     std::vector<short unsigned int> columns_widths = __stream_widths_vec();
@@ -200,7 +200,9 @@ void cdata_frame<T>::__print(std::true_type) const
     }
 
     // Print data
-    for (size_t i = 0; i < cmatrix<T>::dim_v(); i++)
+    const size_t n_rows = std::min((size_t)n, cmatrix<T>::dim_v());
+
+    for (size_t i = 0; i < n_rows; i++)
     {
         // If has index, get the index of the row
         const std::string index = has_index() ? m_index[i] : "";
@@ -209,7 +211,7 @@ void cdata_frame<T>::__print(std::true_type) const
         __print_row(columns_widths, cmatrix<T>::rows_vec(i), index);
 
         // Print the middle line except for the last row
-        if (i != cmatrix<T>::dim_v() - 1)
+        if (i != n_rows - 1)
             __print_border_middle(columns_widths);
     }
 
@@ -218,7 +220,7 @@ void cdata_frame<T>::__print(std::true_type) const
 }
 
 template <class T>
-void cdata_frame<T>::__print(std::false_type) const
+void cdata_frame<T>::__print(const unsigned int &n, std::false_type) const
 {
     // Print the header
     std::cout << "Keys  : ";
@@ -236,13 +238,33 @@ void cdata_frame<T>::__print(std::false_type) const
 
     std::cout << std::endl;
 
-    std::cout << "Data  : ";
     // Print the data
-    cmatrix<T>::print();
+    const size_t n_rows = std::min((size_t)n, cmatrix<T>::dim_v());
+    std::cout << "Data  : [";
+
+    for (size_t i = 0; i < n_rows; i++)
+    {
+        std::cout << "[ ";
+
+        for (size_t j = 0; j < cmatrix<T>::dim_h(); j++)
+        {
+            std::cout << cmatrix<T>::cell(i, j);
+
+            if (j != cmatrix<T>::dim_h() - 1)
+                std::cout << ", ";
+        }
+
+        std::cout << " ]";
+
+        if (i != n_rows - 1)
+            std::cout << ", ";
+    }
+
+    std::cout << "]" << std::endl;
 }
 
 template <class T>
-void cdata_frame<T>::print() const
+void cdata_frame<T>::print(const unsigned int &n) const
 {
-    __print(std::integral_constant < bool, std::is_fundamental<T>::value or std::is_same<T, std::string>::value > {});
+    __print(n, std::integral_constant < bool, std::is_fundamental<T>::value or std::is_same<T, std::string>::value > {});
 }

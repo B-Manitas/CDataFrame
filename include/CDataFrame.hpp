@@ -153,19 +153,21 @@ private:
     /**
      * @brief Print the data frame.
      *
+     * @param n The number of rows to print.
      * @param true_type The type T is a primitive type.
      *
      * @ingroup general
      */
-    void __print(std::true_type) const;
+    void __print(const unsigned int &n, std::true_type) const;
     /**
      * @brief Print the data frame.
      *
+     * @param n The number of rows to print.
      * @param false_type The type T is not a primitive type.
      *
      * @ingroup general
      */
-    void __print(std::false_type) const;
+    void __print(const unsigned int &n, std::false_type) const;
 
     // CHECK
     /**
@@ -660,9 +662,11 @@ public:
     /**
      * @brief Print the data frame.
      *
+     * @param n The number of rows to print. Default is 5.
+     *
      * @ingroup general
      */
-    void print() const;
+    void print(const unsigned int &n = 5) const;
     /**
      * @brief Copy the data frame.
      *
