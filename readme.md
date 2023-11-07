@@ -12,8 +12,9 @@ This library works with C++11 or higher.
 1. [Installation](#installation)
 2. [Hierarchical Structure](#hierarchical-structure)
 3. [Documentation](#documentation)
-4. [See Also](#see-also)
-5. [License](#license)
+4. [Libraries Used](#libraries-used)
+5. [See Also](#see-also)
+6. [License](#license)
 
 ## Installation
 
@@ -22,16 +23,10 @@ To install the library, follow these steps:
 1. Clone the repository using the following command:
 
 ```bash
-git clone https://github.com/B-Manitas/CDataFrame.git
+git clone --recurse-submodules https://github.com/B-Manitas/CDataFrame.git
 ```
 
-2. Install required libraries using the following commands:
-
-```bash
-make install
-```
-
-3. Include the [`CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
+2. Include the [`CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
 
 ## Hierarchical Structure
 
@@ -56,6 +51,13 @@ CMatrix is structured as follows:
 ## Documentation
 
 For detailed information on how to use CMatrix, consult the [documentation](docs/cdataframe.pdf).
+
+## Libraries Used
+
+- [CMatrix](https://github.com/B-Manitas/CMatrix): A C++ library for matrix operations. _(Required for compile CMatrix)_
+- [OpenMP](https://www.openmp.org/): An API for parallel programming. _(Required for compile CMatrix)_
+- [GoogleTest](https://github.com/google/googletest): A C++ testing framework.
+- [Doxygen](https://www.doxygen.nl): A documentation generator.
 
 ## See Also
 
