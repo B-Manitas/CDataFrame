@@ -23,10 +23,11 @@ To install the library, follow these steps:
 1. Clone the repository using the following command:
 
 ```bash
-git clone --recurse-submodules https://github.com/B-Manitas/CDataFrame.git
+git submodule add https://github.com/B-Manitas/CDataFrame.git
+git submodule update --init --recursive
 ```
 
-2. Include the [`CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
+2. Include the [`CDataFrame/include/CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
 
 ## Hierarchical Structure
 
