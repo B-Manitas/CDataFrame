@@ -1,3 +1,4 @@
 [submodule "lib/CMatrix"]
 	path = lib/CMatrix
-	url = https://github.com/b-manitas/CMatrix
+	url = https://github.com/B-Manitas/CMatrix.git
+	branch = main
