@@ -23,7 +23,7 @@ To install the library, follow these steps:
 1. Clone the repository using the following command:
 
 ```bash
-git submodule add https://github.com/B-Manitas/CDataFrame.git
+git submodule add -b main  https://github.com/B-Manitas/CDataFrame.git
 git submodule update --init --recursive
 ```
 
