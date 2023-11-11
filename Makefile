@@ -1,7 +1,7 @@
 # Compiler, flags, and libraries
 CC = g++
-CFLAGS = -std=c++11 -Wall -I./include -I./test
-LIBS_TEST = -lgtest -lpthread
+CFLAGS = -std=c++11 -Wall -fopenmp -I./include -I./test
+LIBS_TEST = -lgtest -lpthread 
 
 # Files
 SRC = $(wildcard ./src/*.cpp)

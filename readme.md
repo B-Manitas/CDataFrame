@@ -29,6 +29,12 @@ git submodule update --init --recursive
 
 2. Include the [`CDataFrame/include/CDataFrame.hpp`](include/CDataFrame.hpp) file in your project.
 
+3. Compile your project with the following flags:
+
+```bash
+-std=c++11 -fopenmp
+```
+
 ## Hierarchical Structure
 
 CMatrix is structured as follows:
