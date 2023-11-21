@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Active-green.svg)](https://github.com/B-Manitas/CMatrix)
 
-CDataFrame is a C++ library for Data Science and Machine Learning projects. It is designed to be fast and easy to use. It is based on the [CMatrix](htpps://github.com/B-Manitas/CMatrix) library.
+CDataFrame is a C++ library for Data Science and Machine Learning projects. It is designed to be fast and easy to use. It is based on the [CMatrix](https://github.com/B-Manitas/CMatrix) library.
 
 This library works with C++11 or higher.
 
